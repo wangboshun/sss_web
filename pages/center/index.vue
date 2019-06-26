@@ -90,7 +90,7 @@
 					</view>
 				</view>
 				<view class="cu-item" :class="menuArrow?'arrow':''">
-					<view class="content">
+					<view class="content"> 
 						<text class="cuIcon-tagfill text-red  margin-right-xs"></text>
 						<text class="text-grey">量化中......</text>
 					</view>
