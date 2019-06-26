@@ -3,18 +3,18 @@
 		{
 			"path": "pages/index/index",
 			"style": {
-				"navigationBarTitleText": "BTC顺顺顺"
+				"navigationBarTitleText": "BTC"
 			}
-		}
-	    ,{
-            "path" : "pages/index/index",
-            "style" : {}
-        } 
+		}, 
+		{
+		    "path" : "pages/center/order",
+		    "style" : {}
+		}  
     ],
-	"globalStyle": {
-		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "uni-app",
-		"navigationBarBackgroundColor": "#F8F8F8",
-		"backgroundColor": "#F8F8F8"
+		"globalStyle": { 
+		"navigationBarBackgroundColor": "#0081ff",
+		"navigationBarTitleText": "BTC",
+		"navigationStyle": "custom",
+		"navigationBarTextStyle": "white"
 	}
 }

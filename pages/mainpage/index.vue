@@ -1,9 +1,9 @@
-<template name="main">
+<template name="mainpage">
 	<view>
-		main
-		<scroll-view scroll-y class="page"> 
+		mainpage 
+		<scroll-view scroll-y class="page">
 			<view class="nav-list">
-				main
+				mainpage
 			</view>
 			<view class="cu-tabbar-height"></view>
 		</scroll-view>
@@ -12,14 +12,11 @@
 
 <script>
 	export default {
-		name: "main",
+		name: "mainpage",
 		data() {
-			return {
-				 
+			return { 
+
 			};
-		},
-		onShow() {
-			console.log("main")
 		}
 	}
 </script>

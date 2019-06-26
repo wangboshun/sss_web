@@ -1,9 +1,9 @@
-<template name="component">
+<template name="manager">
 	<view>
-			component
+			manager
 		<scroll-view scroll-y class="page"> 
 			<view class="nav-list">
-				component
+				manager
 			</view>
 			<view class="cu-tabbar-height"></view>
 		</scroll-view>
@@ -12,14 +12,11 @@
 
 <script>
 	export default {
-		name: "component",
-		data() {
+		name: "manager",
+		data() { 
 			return {
 				 
 			};
-		},
-		onShow() {
-			console.log("component")
 		}
 	}
 </script>

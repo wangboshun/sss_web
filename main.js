@@ -1,14 +1,17 @@
 import Vue from 'vue'
 import App from './App'
-
-import main from './pages/main/index.vue'
-Vue.component('main',main) 
-
+ 
+ import mainpage from './pages/mainpage/index.vue'
+ Vue.component('mainpage',mainpage)
+ 
 import center from './pages/center/index.vue'
 Vue.component('center',center)
 
-import components from './pages/component/index.vue'
-Vue.component('components',components) 
+import manager from './pages/manager/index.vue'
+Vue.component('manager',manager) 
+
+import cuCustom from './colorui/components/cu-custom.vue'
+Vue.component('cu-custom',cuCustom)
 
 Vue.config.productionTip = false
 Vue.prototype.api_url="http://www.qq.com";
