@@ -30,16 +30,23 @@
 </template>
 
 <script>
+	import utils from '../../utils.js'; 
+	 
 	export default {
 		data() {
 			return {
-				PageCur: 'mainpage'
+				PageCur:'mainpage' 
 			}
+		},  
+		onShow() { 
+			console.log(utils)
+			console.log("index onShow") 
 		},
-		onShow() {
-			console.log("index onShow")
-		},
-		onLoad() {
+		onLoad(option) {
+			if (option.route !== null) {
+				this.PageCur = option.route;
+			}
+ 
 			let the = this;
 			let url = this.api_url;
 			console.log("index onLoad")

@@ -5,10 +5,10 @@
 			<block slot="content">订单列表</block>
 		</cu-custom>
 
-		<view class="cu-list menu" :class="[menuBorder?'sm-border':'',menuCard?'card-menu margin-top':'']" v-for="(item,key,index) in orderList">
-			<view class="cu-item" :class="menuArrow?'arrow':''">
- 
-				<view class="cu-capsule">
+		<view class="cu-list menu" :class="[menuBorder?'sm-border':'',menuCard?'card-menu margin-top':'']" v-for="item in orderList">
+			<view class="cu-item" :class="menuArrow?'arrow':''" @click="opendetail(item.orderno)">
+
+				<view class="cu-capsule radius">
 					<view class='cu-tag bg-cyan '>
 						订单号
 					</view>
@@ -16,20 +16,6 @@
 						{{item.orderno}}
 					</view>
 				</view>
-				<!--<view class="cu-capsule">
-					<view class='cu-tag bg-cyan '>
-						数量
-					</view>
-					<view class="cu-tag line-cyan">
-						123
-					</view>
-				</view>
-
-				<view class="cu-capsule">
-					<view class="cu-tag line-cyan">
-						{{item.createtime}}
-					</view>
-				</view> -->
 
 				<view class="action">
 					<view class="cu-tag round bg-orange light" style="width: 30px;">{{item.coin}}</view>
@@ -96,7 +82,13 @@
 				menuArrow: false
 			}
 		},
-		methods: {}
+		methods: {
+			opendetail(e) {
+				uni.navigateTo({
+					url: 'orderdetail?orderno=' + e
+				})
+			}
+		}
 	}
 </script>
 

@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import App from './App'
- 
- import mainpage from './pages/mainpage/index.vue'
- Vue.component('mainpage',mainpage)
+
+import mainpage from './pages/mainpage/index.vue'
+Vue.component('mainpage',mainpage)
  
 import center from './pages/center/index.vue'
 Vue.component('center',center)
@@ -14,10 +14,11 @@ import cuCustom from './colorui/components/cu-custom.vue'
 Vue.component('cu-custom',cuCustom)
 
 Vue.config.productionTip = false
-Vue.prototype.api_url="http://www.qq.com";
+ 
 App.mpType = 'app'
 
 const app = new Vue({
     ...App
 })
+
 app.$mount() 

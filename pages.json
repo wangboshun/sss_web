@@ -5,13 +5,29 @@
 			"style": {
 				"navigationBarTitleText": "BTC"
 			}
-		}, 
+		},
 		{
-		    "path" : "pages/center/order",
-		    "style" : {}
-		}  
-    ],
-		"globalStyle": { 
+			"path": "pages/center/order",
+			"style": {}
+		},
+		{
+			"path": "pages/center/orderdetail",
+			"style": {}
+		},
+		{
+			"path": "pages/center/config",
+			"style": {}
+		},
+		{
+			"path": "pages/center/trade",
+			"style": {}
+		},
+		{
+			"path": "pages/center/win",
+			"style": {}
+		}
+	],
+	"globalStyle": {
 		"navigationBarBackgroundColor": "#0081ff",
 		"navigationBarTitleText": "BTC",
 		"navigationStyle": "custom",

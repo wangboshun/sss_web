@@ -3154,6 +3154,10 @@ scroll-view.cu-steps .cu-item {
 	padding: 0;
 }
 
+.padding-5 {
+	padding: 5upx;
+}
+
 .padding-xs {
 	padding: 10upx;
 }

@@ -51,10 +51,16 @@
 			},
 		},
 		methods: {
-			BackPage() { 
+			BackPage() {  
 				if (getCurrentPages().length < 2 && 'undefined' !== typeof __wxConfig) {
-					let url = '/' + __wxConfig.pages[0]
-					return uni.redirectTo({url})
+					let url = '/' + __wxConfig.pages[0];
+					if(getCurrentPages()[0].route.indexOf("center")){
+						url=url+'?route=center';
+						return uni.redirectTo({url})
+					} 
+					else{
+						return uni.redirectTo({url})
+					}
 				}
 				uni.navigateBack({
 					delta: 1

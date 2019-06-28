@@ -14,7 +14,7 @@
 
 			<view class="cu-list grid" :class="['col-' + gridCol,gridBorder?'':'no-border']">
 				<view class="cu-item" v-for="(item,index) in cuIconList" :key="index" v-if="index<gridCol*2">
-					<view :class="['cuIcon-' + item.cuIcon,'text-' + item.color]">
+					<view @click="openurl(item.url)" :class="['cuIcon-' + item.cuIcon,'text-' + item.color]">
 						<view class="cu-tag badge" v-if="item.badge!=0">
 							<block v-if="item.badge!=1">{{item.badge>99?'99+':item.badge}}</block>
 						</view>
@@ -68,7 +68,7 @@
 				</view>
 
 				<view class="cu-item" :class="menuArrow?'arrow':''">
-					<navigator class="content" hover-class="none" url="../center/order" open-type="redirect">
+					<navigator class="content" hover-class="none" url="../center/trade" open-type="redirect">
 						<text class="cuIcon-album text-orange"></text>
 						<text class="text-grey">账单收益</text>
 					</navigator>
@@ -90,7 +90,7 @@
 					</view>
 				</view>
 				<view class="cu-item" :class="menuArrow?'arrow':''">
-					<view class="content"> 
+					<view class="content">
 						<text class="cuIcon-tagfill text-red  margin-right-xs"></text>
 						<text class="text-grey">量化中......</text>
 					</view>
@@ -123,32 +123,38 @@
 					cuIcon: 'pay',
 					color: 'red',
 					badge: 120,
-					name: '资金'
+					name: '资金',
+					url: '/pages/center/money'
 				}, {
 					cuIcon: 'order',
 					color: 'orange',
 					badge: 1,
-					name: '账单'
+					name: '账单',
+					url: '/pages/center/trade'
 				}, {
 					cuIcon: 'moneybag',
 					color: 'yellow',
 					badge: 0,
-					name: '盈亏'
+					name: '盈亏',
+					url: '/pages/center/win'
 				}, {
 					cuIcon: 'noticefill',
 					color: 'olive',
 					badge: 22,
-					name: '通知'
+					name: '通知',
+					url: '/pages/center/notity'
 				}, {
 					cuIcon: 'upstagefill',
 					color: 'cyan',
 					badge: 0,
-					name: '排行榜'
+					name: '排行榜',
+					url: '/pages/center/config'
 				}, {
 					cuIcon: 'settings',
 					color: 'blue',
 					badge: 0,
-					name: '配置'
+					name: '配置',
+					url: '/pages/center/config'
 				}],
 				modalName: null,
 				gridCol: 3,
@@ -162,6 +168,11 @@
 			};
 		},
 		methods: {
+			openurl(e) {
+				uni.navigateTo({
+					url: e
+				})
+			},
 			showModal(e) {
 				this.modalName = e.currentTarget.dataset.target
 			},
