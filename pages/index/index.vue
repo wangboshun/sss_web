@@ -11,7 +11,7 @@
 				</view>
 				<view :class="PageCur=='mainpage'?'text-green':'text-gray'">首页</view>
 			</view>
-
+         
 			<view class="action" @click="NavChange" data-cur="manager">
 				<view class='cuIcon-cu-image'>
 					<image :src="'/static/tabbar/manager' + [PageCur == 'manager'?'_cur':''] + '.png'"></image>

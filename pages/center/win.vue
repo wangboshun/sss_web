@@ -1,98 +1,160 @@
 <template>
-	<scroll-view class="page">
+	<view>
 		<cu-custom bgColor="bg-gradual-pink" :isBack="true">
 			<block slot="backText">返回</block>
-			<block slot="content">账户盈亏</block>
+			<block slot="content">盈亏比</block>
 		</cu-custom>
-		<canvas canvas-id="canvasGauge" id="canvasGauge" class="charts"></canvas>
-	</scroll-view>
+
+		<canvas canvas-id="canvasArcbar1" id="canvasArcbar1" class="charts3"></canvas>
+		<canvas canvas-id="canvasArcbar2" id="canvasArcbar2" class="charts3" style="margin-left: 250upx;"></canvas>
+		<canvas canvas-id="canvasArcbar3" id="canvasArcbar3" class="charts3" style="margin-left: 500upx;"></canvas>
+
+	</view>
 </template>
 
 <script>
-import utils from '../../utils.js';
-import uCharts from '../../chart/components/u-charts.js';
-var _self;
-var canvaGauge = null;
+	import utils from '../../utils.js';
+	import uCharts from '../../chart/components/u-charts.js';
+	var _self;
 
-export default {
-	data() {
-		return {
-			cWidth: '',
-			cHeight: '',
-			pixelRatio: 1,
-			Gauge: {
-				categories: [
-					{
-						value: 0.2,
-						color: '#1890ff'
-					},
-					{
-						value: 0.8,
-						color: '#2fc25b'
-					},
-					{
-						value: 1,
-						color: '#f04864'
-					}
-				],
-				series: [
-					{
-						name: '',
-						data: 0.66
-					}
-				]
+	export default {
+		data() {
+			return {
+				cWidth3: '', //圆弧进度图
+				cHeight3: '', //圆弧进度图
+				arcbarWidth: '', //圆弧进度图，进度条宽度,此设置可使各端宽度一致
+				pixelRatio: 1,
+				textarea: '',
+				Arcbar1: {
+					series: [{
+						name: "正确率",
+						data: 0.29,
+						color: "#2fc25b"
+					}]
+				},
+				Arcbar2: {
+					series: [{
+						name: "错误率",
+						data: 0.65,
+						color: "#f04864"
+					}]
+				},
+				Arcbar3: {
+					series: [{
+						name: "完成率",
+						data: 0.85,
+						color: "#1890ff"
+					}]
+				}
 			}
-		};
-	},
-	onLoad() {
-		_self = this;
-		this.cWidth = uni.upx2px(750);
-		this.cHeight = uni.upx2px(500);
-		this.showGauge();
-	},
-	methods: {
-		showGauge() {
-			let chartData = _self.$data.Gauge;
-			canvaGauge = new uCharts({
-				$this: _self,
-				canvasId: 'canvasGauge',
-				type: 'gauge',
-				fontSize: 11,
-				legend: false,
-				extra: {
-					gauge: {
-						type: 'default',
-						width: _self.gaugeWidth * _self.pixelRatio, //仪表盘背景的宽度
-						startAngle: 0.75,
-						endAngle: 0.25,
-						startNumber: 0,
-						endNumber: 100,
-						splitLine: {
-							fixRadius: 0,
-							splitNumber: 10,
-							width: _self.gaugeWidth * _self.pixelRatio, //仪表盘背景的宽度
-							color: '#FFFFFF',
-							childNumber: 5,
-							childWidth: _self.gaugeWidth * 0.4 * _self.pixelRatio //仪表盘背景的宽度
-						},
-						pointer: {
-							width: _self.gaugeWidth * 0.8 * _self.pixelRatio, //指针宽度
-							color: 'auto'
+		},
+		onLoad() {
+			_self = this;
+			this.cWidth3 = uni.upx2px(250);
+			this.cHeight3 = uni.upx2px(250);
+			this.arcbarWidth = uni.upx2px(24);
+
+			let Arcbar1 = {
+				series: []
+			};
+			let Arcbar2 = {
+				series: []
+			};
+			let Arcbar3 = {
+				series: []
+			};
+
+			Arcbar1.series = _self.$data.Arcbar1.series;
+			Arcbar2.series = _self.$data.Arcbar2.series;
+			Arcbar3.series = _self.$data.Arcbar3.series;
+
+
+			this.showArcbar('canvasArcbar1', 0, Arcbar1);
+			this.showArcbar('canvasArcbar2', 1, Arcbar2);
+			this.showArcbar('canvasArcbar3', 2, Arcbar3);
+		},
+		methods: {
+			showArcbar(id, index, chartData) {
+				new uCharts({
+					$this: _self,
+					canvasId: id,
+					type: 'arcbar',
+					fontSize: 11,
+					legend: false,
+					background: '#FFFFFF',
+					pixelRatio: _self.pixelRatio,
+					series: chartData.series,
+					animation: true,
+					width: _self.cWidth3 * _self.pixelRatio,
+					height: _self.cHeight3 * _self.pixelRatio,
+					dataLabel: true,
+					title: {
+						name: Math.round(chartData.series[index].data * 100) + '%',
+						color: chartData.series[index].color,
+						fontSize: 25 * _self.pixelRatio
+					},
+					subtitle: {
+						name: chartData.series[index].name,
+						color: '#666666',
+						fontSize: 15 * _self.pixelRatio
+					},
+					extra: {
+						arcbar: {
+							type: 'default',
+							width: _self.arcbarWidth * _self.pixelRatio, //圆弧的宽度
 						}
 					}
-				},
-				background: '#FFFFFF',
-				pixelRatio: _self.pixelRatio,
-				categories: chartData.categories,
-				series: chartData.series,
-				animation: true,
-				width: _self.cWidth * _self.pixelRatio,
-				height: _self.cHeight * _self.pixelRatio,
-				dataLabel: true
-			});
+				});
+			},
+			showArcbar(id, index, chartData) {
+				new uCharts({
+					$this: _self,
+					canvasId: id,
+					type: 'arcbar',
+					fontSize: 11,
+					legend: false,
+					background: '#FFFFFF',
+					pixelRatio: _self.pixelRatio,
+					series: chartData.series,
+					animation: true,
+					width: _self.cWidth3 * _self.pixelRatio,
+					height: _self.cHeight3 * _self.pixelRatio,
+					dataLabel: true,
+					title: {
+						name: Math.round(chartData.series[index].data * 100) + '%',
+						color: chartData.series[index].color,
+						fontSize: 25 * _self.pixelRatio
+					},
+					subtitle: {
+						name: chartData.series[index].name,
+						color: '#666666',
+						fontSize: 15 * _self.pixelRatio
+					},
+					extra: {
+						arcbar: {
+							type: 'default',
+							width: _self.arcbarWidth * _self.pixelRatio, //圆弧的宽度
+						}
+					}
+				});
+			}
 		}
 	}
-};
 </script>
 
-<style></style>
+<style>
+	/*样式的width和height一定要与定义的cWidth和cHeight相对应*/
+	.qiun-charts3 {
+		width: 750upx;
+		height: 250upx;
+		background-color: #FFFFFF;
+		position: relative;
+	}
+
+	.charts3 {
+		position: absolute;
+		width: 250upx;
+		height: 250upx;
+		background-color: #FFFFFF;
+	}
+</style>
