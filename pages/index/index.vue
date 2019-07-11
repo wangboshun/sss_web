@@ -11,7 +11,7 @@
 				</view>
 				<view :class="PageCur=='mainpage'?'text-green':'text-gray'">首页</view>
 			</view>
-         
+
 			<view class="action" @click="NavChange" data-cur="manager">
 				<view class='cuIcon-cu-image'>
 					<image :src="'/static/tabbar/manager' + [PageCur == 'manager'?'_cur':''] + '.png'"></image>
@@ -30,23 +30,40 @@
 </template>
 
 <script>
-	import utils from '../../utils.js'; 
-	 
+	import utils from '../../utils.js';
+	var _self;
+
 	export default {
 		data() {
 			return {
-				PageCur:'mainpage' 
+				PageCur: 'mainpage'
 			}
-		},  
-		onShow() { 
-			console.log(utils)
-			console.log("index onShow") 
+		},
+		onShow() {
+			_self = this; 
+			// uni.login({
+			// 	provider: 'weixin',
+			// 	success: function(res) {
+			// 		uni.request({
+			// 			method: 'POST',
+			// 			url: utils.api_url + "/api/v1/UserInfo/add",
+			// 			data: {
+			// 				code: res.code
+			// 			},
+			// 			success(res) {
+			// 				debugger
+			// 			}
+			// 		})
+			// 	}
+			// });
+ 
+			console.log("index onShow")
 		},
 		onLoad(option) {
 			if (option.route !== null) {
 				this.PageCur = option.route;
 			}
- 
+
 			let the = this;
 			let url = this.api_url;
 			console.log("index onLoad")

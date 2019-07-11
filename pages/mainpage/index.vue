@@ -12,9 +12,12 @@
 					<video :src="item.url" autoplay loop muted :show-play-btn="false" :controls="false" objectFit="cover" v-if="item.type=='video'"></video>
 				</swiper-item>
 			</swiper>
+
+			<button type="primary" open-type="getUserInfo" @getuserinfo="getUserInfo">使用微信登录</button>
+
 			<view class="footer">
 				<view class="text-center">
-					<image @click="previewImage"  src="../../static/thank.jpg"></image>
+					<image @click="previewImage" src="../../static/thank.jpg"></image>
 				</view>
 			</view>
 		</scroll-view>
@@ -22,6 +25,7 @@
 </template>
 
 <script>
+	import utils from '../../utils.js';
 	export default {
 		name: "mainpage",
 		data() {
@@ -48,10 +52,31 @@
 			};
 		},
 		methods: {
-			previewImage() { 
+			previewImage() {
 				uni.previewImage({
 					urls: ["https://small.huanchongkeji.com/thanks.jpg"]
-				}); 
+				});
+			},
+			getUserInfo: function(data) { 
+				uni.login({
+					provider: 'weixin',
+					success: function(res) {
+						uni.request({
+							method: 'POST',
+							url: utils.api_url + "/api/v1/UserInfo/add", 
+							data: {
+								code:res.code,
+								iv: data.detail.iv,
+								encryptedData: data.detail.encryptedData
+							},
+							success(res) {
+								debugger
+							}
+						})
+					}
+				});
+
+
 			}
 		}
 	}

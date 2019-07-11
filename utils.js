@@ -1,4 +1,4 @@
-const api_url = 'http://www.qq.com';
+const api_url = 'http://localhost:1234';
 
 const toast = function(title) { 
 	uni.showToast({
