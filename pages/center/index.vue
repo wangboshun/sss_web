@@ -154,7 +154,7 @@
 					color: 'blue',
 					badge: 0,
 					name: '配置',
-					url: '/pages/center/config'
+					url: '/pages/center/configlist'
 				}],
 				modalName: null,
 				gridCol: 3,

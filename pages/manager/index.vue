@@ -16,17 +16,17 @@
 				<form>
 					<view class="cu-form-group  margin-top">
 						<view class="title">ApiKey：</view>
-						<input name="input" />
+						<input type="text" name="ApiKey" v-model="Account.ApiKey" />
 					</view>
 
 					<view class="cu-form-group  margin-top">
 						<view class="title">Secret：</view>
-						<input name="input" />
+						<input type="text" name="Secret" v-model="Account.Secret" />
 					</view>
 
 					<view class="cu-form-group  margin-top">
 						<view class="title">PassPhrase：</view>
-						<input name="input" />
+						<input type="text" name="PassPhrase" v-model="Account.PassPhrase" />
 					</view>
 
 					<view class="padding flex flex-direction"><button class="cu-btn bg-red margin-tb-sm lg" @click="confirm">确定</button></view>
@@ -52,7 +52,7 @@
 					</view>
 
 				</view>
-				<view class="cu-list menu"> 
+				<view class="cu-list menu">
 					<view class="cu-item">
 						<view class="content">
 							<text class="cuIcon-tagfill text-red  margin-right-xs"></text>
@@ -66,12 +66,18 @@
 					</view>
 				</view>
 			</view>
+
+			<view class="cu-load load-modal" v-if="loadModal">
+				<view class="cuIcon-emojifill text-orange"></view>
+				<view class="gray-text">加载中...</view>
+			</view>
+
 		</scroll-view>
+
 	</view>
 </template>
 
 <script>
-	import utils from '../../utils.js';
 	import uCharts from '../../chart/components/u-charts.js';
 	var _self;
 	var canvaColumn = null;
@@ -80,10 +86,16 @@
 		name: 'manager',
 		data() {
 			return {
+				Account: {
+					ApiKey: '1',
+					Secret: '2',
+					PassPhrase: '3',
+				},
 				cWidth: '',
 				cHeight: '',
 				pixelRatio: 1,
-				isbind: true,
+				loadModal: true,
+				isbind: false,
 				ColumnData: {
 					categories: ['06-26', '06-27', '06-28', '06-29', '06-30', '07-01', '07-02'],
 					series: [{
@@ -94,15 +106,31 @@
 			}
 		},
 		created: function() {
-			if (this.isbind) {
-				_self = this;
-				this.cWidth = uni.upx2px(750);
-				this.cHeight = uni.upx2px(500);
-				this.showcolumn();
-			}
+			this.getuserkey();
 		},
 		methods: {
+			getuserkey() {
+				_self = this;
+				_self.Http.get("/api/v1/UserApi/getbyuserid", {
+					Userid: 'userid'
+				}).then((res) => {
+					this.isbind = true;
+					this.cWidth = uni.upx2px(750);
+					this.cHeight = uni.upx2px(500);
+					this.showcolumn();
+					this.loadModal = false;
+				}).catch((err) => {
+					if (!err.data.status) {
+						this.loadModal = false;
+						this.isbind = false;
+					} else {
+						_self.Utils.toast("接口异常", true);
+						this.loadModal = false;
+					}
+				})
+			},
 			showcolumn() {
+				_self = this;
 				let chartData = _self.$data.ColumnData;
 				canvaColumn = new uCharts({
 					$this: _self,
@@ -144,7 +172,24 @@
 				});
 			},
 			confirm() {
-				utils.toast('配置成功');
+				_self = this;
+				_self.Http.post("/api/v1/UserApi/add", {
+					ApiKey: this.$data.Account.ApiKey,
+					Secret: this.$data.Account.Secret,
+					PassPhrase: this.$data.Account.PassPhrase,
+					Userid: 'userid'
+				}).then((res) => {
+
+					if (res.data.status) {
+						_self.Utils.toast("设置成功");
+						uni.reLaunch({
+							url: 'index?route=manager'
+						})
+					}
+
+				}).catch((err) => {
+					_self.Utils.toast("接口异常", true);
+				})
 			}
 		}
 	};

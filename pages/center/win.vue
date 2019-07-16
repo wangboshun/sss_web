@@ -37,8 +37,7 @@
 	</scroll-view>
 </template>
 
-<script>
-	import utils from '../../utils.js';
+<script> 
 	import uCharts from '../../chart/components/u-charts.js';
 	var _self;
 	var canvaArcbar1;

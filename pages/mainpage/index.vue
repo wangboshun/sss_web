@@ -25,7 +25,8 @@
 </template>
 
 <script>
-	import utils from '../../utils.js';
+	var _self;
+
 	export default {
 		name: "mainpage",
 		data() {
@@ -57,26 +58,22 @@
 					urls: ["https://small.huanchongkeji.com/thanks.jpg"]
 				});
 			},
-			getUserInfo: function(data) { 
+			getUserInfo: function(data) {
+				_self = this;
 				uni.login({
 					provider: 'weixin',
 					success: function(res) {
-						uni.request({
-							method: 'POST',
-							url: utils.api_url + "/api/v1/UserInfo/add", 
-							data: {
-								code:res.code,
-								iv: data.detail.iv,
-								encryptedData: data.detail.encryptedData
-							},
-							success(res) {
-								debugger
-							}
+						_self.Http.get("/api/v1/UserInfo/add", {
+							code: res.code,
+							iv: data.detail.iv,
+							encryptedData: data.detail.encryptedData
+						}).then((res) => {
+							console.log('request success', res);
+						}).catch((err) => {
+							console.log('request fail', err);
 						})
-					}
+					},
 				});
-
-
 			}
 		}
 	}

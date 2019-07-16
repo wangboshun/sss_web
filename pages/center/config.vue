@@ -49,9 +49,7 @@
 
 </template>
 
-<script>
-	import utils from '../../utils.js';
-
+<script> 
 	export default {
 		data() {
 			return {
@@ -69,7 +67,7 @@
 				this.ktimeindex = e.detail.value
 			},
 			confirm() {
-				utils.toast("设置成功");
+				this.Utils.toast("设置成功");
 			}
 		}
 	}

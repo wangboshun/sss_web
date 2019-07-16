@@ -15,7 +15,7 @@
 			<view class="action" @click="NavChange" data-cur="manager">
 				<view class='cuIcon-cu-image'>
 					<image :src="'/static/tabbar/manager' + [PageCur == 'manager'?'_cur':''] + '.png'"></image>
-				</view>
+				</view> 
 				<view :class="PageCur=='manager'?'text-green':'text-gray'">管理</view>
 			</view>
 
@@ -29,8 +29,7 @@
 	</view>
 </template>
 
-<script>
-	import utils from '../../utils.js';
+<script> 
 	var _self;
 
 	export default {
@@ -46,7 +45,7 @@
 			// 	success: function(res) {
 			// 		uni.request({
 			// 			method: 'POST',
-			// 			url: utils.api_url + "/api/v1/UserInfo/add",
+			// 			url: this.Utils.api_url + "/api/v1/UserInfo/add",
 			// 			data: {
 			// 				code: res.code
 			// 			},
