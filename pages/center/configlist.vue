@@ -5,7 +5,7 @@
 			<block slot="content">配置列表</block>
 		</cu-custom>
 
-		<view class="cu-list menu" :class="[menuBorder?'sm-border':'',menuCard?'card-menu margin-top':'']" v-for="(item,key) in orderList">
+		<view class="cu-list menu" :class="[menuBorder?'sm-border':'',menuCard?'card-menu margin-top':'']" v-for="(item,key) in configList">
 			<view class="cu-item" :class="menuArrow?'arrow':''" @click="opendetail(item.id)">
 
 				<view class="action">
@@ -29,27 +29,29 @@
 	</scroll-view>
 </template>
 
-<script> 
+<script>
+	
+	var _self;
+	
 	export default {
 		data() {
 			return {
-				orderList: [{
-					id: '20190626123',
-					coin: 'btc',
-					side: '多',
-					ktime: '1分钟',
-					createtime: '2019-06-26 12:12:12'
-				}, {
-					id: '20190626123',
-					coin: 'btc',
-					side: '多',
-					ktime: '15分钟',
-					createtime: '2019-06-26 12:12:12'
-				}],
+				configList: [],
 				menuCard: false,
 				menuBorder: false,
 				menuArrow: false
 			}
+		},
+		onLoad() {
+			_self = this;
+			_self.Http.get("/api/v1/UserConfig/getlist", {
+				Userid: 'userid'
+			}).then((res) => {
+				_self.configList=res.data.data.data;
+				console.log("config---",_self.configList);
+			}).catch((err) => {
+				_self.Utils.toast("接口异常", true);
+			})
 		},
 		methods: {
 			opendetail(e) {

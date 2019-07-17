@@ -121,7 +121,7 @@ export default {
 		options.method = 'GET'  
 		return this.request(options)
 	},
-	post(url, data, options) {
+	post(url, data, options) { 
 		if (!options) {
 			options = {}
 		}

@@ -49,7 +49,8 @@
 
 </template>
 
-<script> 
+<script>
+	var _self;
 	export default {
 		data() {
 			return {
@@ -58,6 +59,18 @@
 				coinlist: ['BTC-USDT', 'ETH-USDT', 'LTC-USDT'],
 				ktimelist: ['1分钟', '15分钟', '1小时'],
 			}
+		},
+		onLoad(e) {
+			debugger
+			_self = this;
+			_self.Http.get("/api/v1/UserConfig/getconfig", {
+				id: e.id
+			}).then((res) => {
+				debugger
+			}).catch((err) => {
+				debugger
+				_self.Utils.toast("接口异常", true);
+			})
 		},
 		methods: {
 			coinchange(e) {

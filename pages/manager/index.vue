@@ -120,12 +120,12 @@
 					this.showcolumn();
 					this.loadModal = false;
 				}).catch((err) => {
-					if (!err.data.status) {
-						this.loadModal = false;
-						this.isbind = false;
-					} else {
+					if (err.data === undefined || err.data !== "") {
 						_self.Utils.toast("接口异常", true);
 						this.loadModal = false;
+					} else if (!err.data.status) { 
+						this.loadModal = false;
+						this.isbind = false;
 					}
 				})
 			},
@@ -178,15 +178,13 @@
 					Secret: this.$data.Account.Secret,
 					PassPhrase: this.$data.Account.PassPhrase,
 					Userid: 'userid'
-				}).then((res) => {
-
+				}).then((res) => { 
 					if (res.data.status) {
 						_self.Utils.toast("设置成功");
 						uni.reLaunch({
 							url: 'index?route=manager'
 						})
-					}
-
+					} 
 				}).catch((err) => {
 					_self.Utils.toast("接口异常", true);
 				})
