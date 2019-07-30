@@ -59,22 +59,32 @@
 				});
 			},
 			getUserInfo: function(data) {
+
 				_self = this;
 				uni.login({
 					provider: 'weixin',
 					success: function(res) {
-						_self.Http.config.header = {
-							'Content-Type': 'application/json;charset=UTF-8'
-						};
+						//_self.Http.config.header = {
+						//	'Content-Type': 'application/json;charset=UTF-8'
+						//};
 						_self.Http.post("/api/v1/UserInfo/add", {
 							code: res.code,
 							iv: data.detail.iv,
 							encryptedData: data.detail.encryptedData
 						}).then((res) => {
-							debugger
+							console.log("success", res)
+							
+							uni.setStorage({
+								key: 'Auth',
+								data: 'hello',
+								success: function() {
+									console.log('setStorage success');
+								}
+							});
+
 						}).catch((err) => {
 							_self.Utils.toast("接口异常", true);
-						}) 
+						})
 					},
 				});
 			}
