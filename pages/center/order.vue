@@ -1,9 +1,9 @@
 <template>
 	<scroll-view class="page">
-		<cu-custom bgColor="bg-gradual-pink" :isBack="true">
+		<cu_custom bgColor="bg-gradual-pink" :isBack="true">
 			<block slot="backText">返回</block>
 			<block slot="content">订单列表</block>
-		</cu-custom>
+		</cu_custom>
 
 		<view class="cu-list menu" :class="[menuBorder?'sm-border':'',menuCard?'card-menu margin-top':'']" v-for="item in orderList">
 			<view class="cu-item" :class="menuArrow?'arrow':''" @click="opendetail(item.orderno)">

@@ -99,22 +99,26 @@ export default {
 				}
 				// 统一的响应日志记录
 				_reslog(response)
-				if (response.data.code == 500) {
-					uni.reLaunch({
-						url: '/pages/index/index?route=mainpage',
-						complete: function() {
-							Utils.toast("权限不足，请重新登录！", true);
-						}
-					});
-				}
-				if (statusCode === 200) { //成功
-					if (response.data.data.count !== undefined && response.data.data.count == 0) {
-						Utils.toast("数据为空！", true);
-					} else {
-						resolve(response);
-					}
-				} else {
+				if (response.data === undefined) {
 					reject(response)
+				} else {
+					if (response.data.code == 500) {
+						uni.reLaunch({
+							url: '/pages/index/index?route=mainpage',
+							complete: function() {
+								Utils.toast("权限不足，请重新登录！", true);
+							}
+						});
+					}
+					if (statusCode === 200) { //成功
+						if (response.data.data.count !== undefined && response.data.data.count == 0) {
+							Utils.toast("数据为空！", true);
+						} else {
+							resolve(response);
+						}
+					} else {
+						reject(response)
+					}
 				}
 			}
 

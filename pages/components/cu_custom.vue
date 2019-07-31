@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<view class="cu-custom" :style="[{height:CustomBar + 'px'}]">
+		<view class="cu_custom" :style="[{height:CustomBar + 'px'}]">
 			<view class="cu-bar fixed" :style="style" :class="[bgImage!=''?'none-bg text-white bg-img':'',bgColor]">
 				<view class="action" @tap="BackPage" v-if="isBack">
 					<text class="cuIcon-back"></text>
@@ -23,7 +23,7 @@
 				CustomBar: this.CustomBar
 			};
 		},
-		name: 'cu-custom',
+		name: 'cu_custom',
 		computed: {
 			style() { 
 				var StatusBar= this.StatusBar;

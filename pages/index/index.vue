@@ -15,7 +15,7 @@
 			<view class="action" @click="NavChange" data-cur="manager">
 				<view class='cuIcon-cu-image'>
 					<image :src="'/static/tabbar/manager' + [PageCur == 'manager'?'_cur':''] + '.png'"></image>
-				</view> 
+				</view>  
 				<view :class="PageCur=='manager'?'text-green':'text-gray'">管理</view>
 			</view>
 

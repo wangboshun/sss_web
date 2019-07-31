@@ -2,9 +2,9 @@
 	<view>
 		<scroll-view class="page">
 
-			<cu-custom bgColor="bg-gradual-pink" :isBack="false">
+			<cu_custom bgColor="bg-gradual-pink" :isBack="false">
 				<block slot="content">个人中心</block>
-			</cu-custom>
+			</cu_custom>
 
 			<view class="cu-bar bg-white solid-bottom margin-top">
 				<view class="action">

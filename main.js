@@ -16,8 +16,11 @@ Vue.component('center', center)
 import manager from './pages/manager/index.vue'
 Vue.component('manager', manager)
 
-import cuCustom from './colorui/components/cu-custom.vue'
-Vue.component('cu-custom', cuCustom)
+import cuCustom from './pages/components/cu_custom.vue'
+Vue.component('cu_custom', cuCustom)
+ 
+import login_modal from './pages/components/login_modal.vue'
+Vue.component('login_modal', login_modal)
 
 Vue.config.productionTip = false
 

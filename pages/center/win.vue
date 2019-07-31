@@ -1,9 +1,9 @@
 <template>
 	<scroll-view class="page">
-		<cu-custom bgColor="bg-gradual-pink" :isBack="true" style="z-index: 2;">
+		<cu_custom bgColor="bg-gradual-pink" :isBack="true" style="z-index: 2;">
 			<block slot="backText">返回</block>
 			<block slot="content">盈亏比</block>
-		</cu-custom>
+		</cu_custom>
 
 		<view class="cu-bar solid-bottom margin-top" style="z-index: 1;">
 			<view class="action">
@@ -28,7 +28,7 @@
 		<view class="cu-bar solid-bottom" style="z-index: 1;">
 			<view class="action">
 				<text class="cuIcon-title text-orange "></text>
-				量化总体分析
+				量化总体分析 
 			</view>
 		</view>
 		<view class="response" style="z-index: 1;">

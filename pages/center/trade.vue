@@ -1,9 +1,9 @@
 <template>
 	<scroll-view class="page">
-		<cu-custom bgColor="bg-gradual-pink" :isBack="true">
+		<cu_custom bgColor="bg-gradual-pink" :isBack="true">
 			<block slot="backText">返回</block>
 			<block slot="content">账单列表</block>
-		</cu-custom>
+		</cu_custom>
 
 		<view class="tradelist  cu-list menu" :class="[menuBorder?'sm-border':'',menuCard?'card-menu margin-top':'']" v-for="(item,index) in tradeList">
 			<view @click="opendetail(item.orderno)">
@@ -14,7 +14,7 @@
 							<view>类型</view>
 							<view> {{item.coin}} : {{item.side}}</view>
 						</view>
-
+ 
 						<view class="flex padding-sm justify-between">
 							<view>收益</view>
 							<view> {{item.percent}}%</view>

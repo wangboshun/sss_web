@@ -1,9 +1,9 @@
 <template name="manager">
 	<view>
 		<scroll-view class="page">
-			<cu-custom bgColor="bg-gradual-pink" :isBack="false">
+			<cu_custom bgColor="bg-gradual-pink" :isBack="false">
 				<block slot="content">账号管理</block>
-			</cu-custom>
+			</cu_custom>
 
 			<view v-if="!isbind">
 				<view class="cu-bar solid-bottom margin-top">
