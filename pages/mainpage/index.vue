@@ -52,6 +52,22 @@
 				]
 			};
 		},
+		created: function() {
+			_self = this;
+			uni.getStorage({
+				key: 'Auth',
+				complete: (res) => {
+					if (res.data !== undefined && res.data !== "") {
+						_self.Openid = res.data;
+						_self.Http.interceptor.request = (config) => {
+							config.header = {
+								"Auth": res.data
+							}
+						}
+					}
+				}
+			});
+		},
 		methods: {
 			previewImage() {
 				uni.previewImage({
@@ -59,7 +75,7 @@
 				});
 			},
 			getUserInfo: function(data) {
-				_self = this; 
+				_self = this;
 				uni.login({
 					provider: 'weixin',
 					success: function(res) {
@@ -69,10 +85,16 @@
 							encryptedData: data.detail.encryptedData
 						}).then((res) => {
 							if (res.data.status) {
+								uni.setStorage({
+									key: 'Auth',
+									data: _self.Openid
+								});
+
 								_self.Openid = res.data.data.openid;
+
 								_self.Http.interceptor.request = (config) => {
 									config.header = {
-										"Auth": res.data.data.openid
+										"Auth": _self.Openid
 									}
 								}
 								_self.Utils.toast("登陆成功");

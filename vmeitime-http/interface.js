@@ -109,7 +109,7 @@ export default {
 				}
 				if (statusCode === 200) { //成功
 					if (response.data.data.count !== undefined && response.data.data.count == 0) {
-						Utils.toast("数据为空！",true);
+						Utils.toast("数据为空！", true);
 					} else {
 						resolve(response);
 					}
