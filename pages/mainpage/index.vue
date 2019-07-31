@@ -20,6 +20,25 @@
 					<image @click="previewImage" src="../../static/thank.jpg"></image>
 				</view>
 			</view>
+			
+			<view class="cu-modal show">
+				<view class="cu-dialog">
+					<view class="cu-bar bg-white justify-end">
+						<view class="content">微信授权登录</view>
+						<view class="action">
+							<text class="cuIcon-close text-red"></text>
+						</view>
+					</view>
+					<view class="padding-xl">
+						需要微信授权登录
+					</view>
+					<view class="cu-bar bg-white"> 
+						<view class="action margin-0 flex-sub text-green solid-left">取消</view>
+						<view class="action margin-0 flex-sub  solid-left">确定</view>
+					</view>
+				</view>
+			</view>
+			
 		</scroll-view>
 	</view>
 </template>
@@ -64,6 +83,8 @@
 								"Auth": res.data
 							}
 						}
+					} else {
+					 
 					}
 				}
 			});
