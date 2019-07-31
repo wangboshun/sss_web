@@ -111,20 +111,24 @@
 		methods: {
 			getuserkey() {
 				_self = this;
-				_self.Http.get("/api/v1/UserApi/getbyuserid", {
-					Userid: 'userid'
-				}).then((res) => {
-					this.isbind = true;
-					this.cWidth = uni.upx2px(750);
-					this.cHeight = uni.upx2px(500);
-					this.showcolumn();
-					this.loadModal = false;
+				_self.Http.get("/api/v1/UserApi/getbyuserid").then((res) => {
+					if (res.data.status) {
+						this.isbind = true;
+						this.cWidth = uni.upx2px(750);
+						this.cHeight = uni.upx2px(500);
+						this.showcolumn();
+						this.loadModal = false;
+					} else {
+						_self.Utils.toast(res.data.message, true);
+						this.loadModal = false;
+					}
 				}).catch((err) => {
-					if (err.data === undefined || err.data !== "") {
+					if (err.data === undefined) {
 						_self.Utils.toast("接口异常", true);
 						this.loadModal = false;
-					} else if (!err.data.status) { 
-						this.loadModal = false;
+					} else if (err.data.data === "" && err.data.code == 200) {
+						_self.Utils.toast("请配置交易Api", true);
+						this.loadModal = false; 
 						this.isbind = false;
 					}
 				})
@@ -176,15 +180,14 @@
 				_self.Http.post("/api/v1/UserApi/add", {
 					ApiKey: this.$data.Account.ApiKey,
 					Secret: this.$data.Account.Secret,
-					PassPhrase: this.$data.Account.PassPhrase,
-					Userid: 'userid'
-				}).then((res) => { 
+					PassPhrase: this.$data.Account.PassPhrase
+				}).then((res) => {
 					if (res.data.status) {
 						_self.Utils.toast("设置成功");
 						uni.reLaunch({
 							url: 'index?route=manager'
 						})
-					} 
+					}
 				}).catch((err) => {
 					_self.Utils.toast("接口异常", true);
 				})

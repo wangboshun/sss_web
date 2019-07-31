@@ -29,28 +29,33 @@ http.delete('user/1').then((res)=>{
 }) 
 
 */
- 
-export default { 
+
+import Utils from 'utils.js'
+
+const Api_Url = 'http://localhost:12345';
+
+export default {
+	Api_Url,
 	config: {
-		baseUrl: "http://localhost:12345",
+		baseUrl: Api_Url,
 		header: {
-			'Content-Type': 'application/json;charset=UTF-8' 
+			'Content-Type': 'application/json;charset=UTF-8'
 		},
 		data: {
-			
+
 		},
 		method: "GET",
 		dataType: "json",
 		/* 如设为json，会对返回的数据做一次 JSON.parse */
 		responseType: "text",
-		success() {
-			console.log("success");
+		success(res) {
+			console.log("------success ------");
 		},
-		fail() {
-			console.log("fail");
+		fail(res) {
+			console.log("------fail ------");
 		},
-		complete() {
-			console.log("complete");
+		complete(res) {
+			console.log("------complete ------");
 		}
 	},
 	interceptor: {
@@ -94,8 +99,20 @@ export default {
 				}
 				// 统一的响应日志记录
 				_reslog(response)
+				if (response.data.code == 500) {
+					uni.reLaunch({
+						url: '/pages/index/index?route=mainpage',
+						complete: function() {
+							Utils.toast("权限不足，请重新登录！", true);
+						}
+					});
+				}
 				if (statusCode === 200) { //成功
-					resolve(response);
+					if (response.data.data.count !== undefined && response.data.data.count == 0) {
+						Utils.toast("数据为空！",true);
+					} else {
+						resolve(response);
+					}
 				} else {
 					reject(response)
 				}

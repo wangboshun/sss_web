@@ -1,4 +1,5 @@
-const api_url = 'http://localhost:12345';
+
+const Openid='';
 
 const toast = function(title, iserror) {
 	uni.showToast({
@@ -8,7 +9,7 @@ const toast = function(title, iserror) {
 	});
 }
 
-export default {
-	api_url,
+export default { 
+	Openid,
 	toast
 }

@@ -30,9 +30,8 @@
 </template>
 
 <script>
-	
 	var _self;
-	
+
 	export default {
 		data() {
 			return {
@@ -44,11 +43,8 @@
 		},
 		onLoad() {
 			_self = this;
-			_self.Http.get("/api/v1/UserConfig/getlist", {
-				Userid: 'userid'
-			}).then((res) => {
-				_self.configList=res.data.data.data;
-				console.log("config---",_self.configList);
+			_self.Http.get("/api/v1/UserConfig/getlist").then((res) => {
+				_self.configList = res.data.data.data;
 			}).catch((err) => {
 				_self.Utils.toast("接口异常", true);
 			})
