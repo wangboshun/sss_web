@@ -167,11 +167,14 @@
 				listTouchDirection: null,
 			};
 		},
+		created: function() {
+			this.$parent.LoginModal();
+		},
 		methods: {
 			openurl(e) {
 				uni.navigateTo({
 					url: e
-				})
+				});
 			},
 			showModal(e) {
 				this.modalName = e.currentTarget.dataset.target

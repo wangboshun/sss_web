@@ -3,7 +3,7 @@
 		<mainpage v-if="PageCur=='mainpage'"></mainpage>
 		<manager v-if="PageCur=='manager'"></manager>
 		<center v-if="PageCur=='center'"></center>
-
+		<login_modal :IsShow.sync=LoginModal_Status></login_modal>
 		<view class="cu-bar tabbar bg-white shadow foot">
 			<view class="action" @click="NavChange" data-cur="mainpage">
 				<view class='cuIcon-cu-image'>
@@ -15,7 +15,7 @@
 			<view class="action" @click="NavChange" data-cur="manager">
 				<view class='cuIcon-cu-image'>
 					<image :src="'/static/tabbar/manager' + [PageCur == 'manager'?'_cur':''] + '.png'"></image>
-				</view>  
+				</view>
 				<view :class="PageCur=='manager'?'text-green':'text-gray'">管理</view>
 			</view>
 
@@ -29,34 +29,18 @@
 	</view>
 </template>
 
-<script> 
+<script>
 	var _self;
 
 	export default {
 		data() {
 			return {
+				LoginModal_Status: false,
 				PageCur: 'mainpage'
 			}
 		},
-		onShow() {
-			_self = this; 
-			// uni.login({
-			// 	provider: 'weixin',
-			// 	success: function(res) {
-			// 		uni.request({
-			// 			method: 'POST',
-			// 			url: this.Utils.api_url + "/api/v1/UserInfo/add",
-			// 			data: {
-			// 				code: res.code
-			// 			},
-			// 			success(res) {
-			// 				debugger
-			// 			}
-			// 		})
-			// 	}
-			// });
- 
-			console.log("index onShow")
+		created: function() {
+
 		},
 		onLoad(option) {
 			if (option.route !== null) {
@@ -86,6 +70,29 @@
 			console.log("index onPageScroll")
 		},
 		methods: {
+			LoginModal: function() {
+				_self = this;
+				uni.getStorage({
+					key: 'Auth',
+					complete: res => { 
+						if (res.data !== undefined && res.data !== '') {
+
+							_self.LoginModal_Status = false;
+							_self.Utils.Openid = res.data;
+							_self.Http.interceptor.request = config => {
+								config.header = {
+									Auth: res.data
+								};
+							};
+						} else {
+							_self.LoginModal_Status = true;
+							uni.removeStorage({
+								key: 'Auth'
+							});
+						}
+					}
+				});
+			},
 			NavChange: function(e) {
 				this.PageCur = e.currentTarget.dataset.cur;
 				let title = "首页";

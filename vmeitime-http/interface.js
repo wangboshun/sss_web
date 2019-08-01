@@ -26,13 +26,13 @@ http.put('user/1', {status: 2}).then((res)=>{
 })
 http.delete('user/1').then((res)=>{
 	console.log(JSON.stringify(res))
-}) 
+})  
 
 */
 
 import Utils from 'utils.js'
 
-const Api_Url = 'http://localhost:12345';
+const Api_Url = 'http://localhost:12345/api/v1/';
 
 export default {
 	Api_Url,
@@ -101,18 +101,19 @@ export default {
 				_reslog(response)
 				if (response.data === undefined) {
 					reject(response)
-				} else {
-					if (response.data.code == 500) {
+				} else { 
+					if (response.data.code == 401) {
 						uni.reLaunch({
 							url: '/pages/index/index?route=mainpage',
 							complete: function() {
-								Utils.toast("权限不足，请重新登录！", true);
+								Utils.toast("权限不足，请重新登录！", true); 
 							}
 						});
 					}
 					if (statusCode === 200) { //成功
 						if (response.data.data.count !== undefined && response.data.data.count == 0) {
-							Utils.toast("数据为空！", true);
+							Utils.toast("暂无数据！", true);
+							resolve(response);
 						} else {
 							resolve(response);
 						}

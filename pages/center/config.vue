@@ -61,16 +61,14 @@
 			}
 		},
 		onLoad(e) {
-			debugger
 			_self = this;
-			_self.Http.get("/api/v1/UserConfig/getconfig", {
-				id: e.id
-			}).then((res) => {
-				debugger
-			}).catch((err) => {
-				debugger
-				_self.Utils.toast("接口异常", true);
-			})
+			if (e.id !== undefined && e.id !== '') {
+				_self.Http.get("UserConfig/getconfig", {
+					id: e.id
+				}).then((res) => {}).catch((err) => {
+					_self.Utils.toast("接口异常", true);
+				})
+			}
 		},
 		methods: {
 			coinchange(e) {
@@ -80,7 +78,19 @@
 				this.ktimeindex = e.detail.value
 			},
 			confirm() {
-				this.Utils.toast("设置成功");
+				_self.Http.post('UserConfig/add', {
+					'coin': 'BTC-USDT',
+					'size': 100.1234,
+					'ktime': 15,
+					'profit': 10,
+					'loss': 10
+				}).then((res) => {
+					debugger
+					this.Utils.toast("设置成功");
+				}).catch((err) => {
+					debugger
+					_self.Utils.toast("接口异常", true);
+				});
 			}
 		}
 	}

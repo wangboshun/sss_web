@@ -106,12 +106,19 @@
 			}
 		},
 		created: function() {
+			this.$parent.LoginModal();
 			this.getuserkey();
 		},
 		methods: {
 			getuserkey() {
-				_self = this;
-				_self.Http.get("/api/v1/UserApi/getbyuserid").then((res) => {
+				_self = this;  
+				if (_self.Utils.Openid === '')
+				{
+					this.loadModal = false;
+					return;
+				}
+					
+				_self.Http.get("UserApi/getbyuserid").then((res) => {
 					if (res.data.status) {
 						this.isbind = true;
 						this.cWidth = uni.upx2px(750);
@@ -128,7 +135,7 @@
 						this.loadModal = false;
 					} else if (err.data.data === "" && err.data.code == 200) {
 						_self.Utils.toast("请配置交易Api", true);
-						this.loadModal = false; 
+						this.loadModal = false;
 						this.isbind = false;
 					}
 				})
@@ -177,7 +184,7 @@
 			},
 			confirm() {
 				_self = this;
-				_self.Http.post("/api/v1/UserApi/add", {
+				_self.Http.post("UserApi/add", {
 					ApiKey: this.$data.Account.ApiKey,
 					Secret: this.$data.Account.Secret,
 					PassPhrase: this.$data.Account.PassPhrase

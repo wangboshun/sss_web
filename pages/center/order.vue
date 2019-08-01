@@ -5,7 +5,8 @@
 			<block slot="content">订单列表</block>
 		</cu_custom>
 
-		<view class="cu-list menu" :class="[menuBorder?'sm-border':'',menuCard?'card-menu margin-top':'']" v-for="item in orderList">
+		<view class="cu-list menu" :class="[menuBorder?'sm-border':'',menuCard?'card-menu margin-top':'']" v-for="(item,index) in orderList"
+		 :key="index">
 			<view class="cu-item" :class="menuArrow?'arrow':''" @click="opendetail(item.orderno)">
 
 				<view class="cu-capsule radius">

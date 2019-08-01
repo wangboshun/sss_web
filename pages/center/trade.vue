@@ -5,7 +5,7 @@
 			<block slot="content">账单列表</block>
 		</cu_custom>
 
-		<view class="tradelist  cu-list menu" :class="[menuBorder?'sm-border':'',menuCard?'card-menu margin-top':'']" v-for="(item,index) in tradeList">
+		<view class="tradelist  cu-list menu" :class="[menuBorder?'sm-border':'',menuCard?'card-menu margin-top':'']" v-for="(item,index) in tradeList" :key="index">
 			<view @click="opendetail(item.orderno)">
 
 				<view class="response padding-xs">
