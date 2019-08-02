@@ -86,6 +86,8 @@
 		name: 'manager',
 		data() {
 			return {
+				updatestatus: true,
+				apiid: '020478ee-8671-40fe-a38f-c121fd63c761',
 				Account: {
 					ApiKey: '1',
 					Secret: '2',
@@ -111,13 +113,12 @@
 		},
 		methods: {
 			getuserkey() {
-				_self = this;  
-				if (_self.Utils.Openid === '')
-				{
+				_self = this;
+				if (_self.Utils.Openid === '') {
 					this.loadModal = false;
 					return;
 				}
-					
+
 				_self.Http.get("UserApi/getbyuserid").then((res) => {
 					if (res.data.status) {
 						this.isbind = true;
@@ -184,11 +185,18 @@
 			},
 			confirm() {
 				_self = this;
-				_self.Http.post("UserApi/add", {
+				let url = 'UserApi/add';
+				let data = {
 					ApiKey: this.$data.Account.ApiKey,
 					Secret: this.$data.Account.Secret,
 					PassPhrase: this.$data.Account.PassPhrase
-				}).then((res) => {
+				};
+				if (_self.updatestatus) {
+					url = 'UserApi/update';
+					data.id = _self.apiid;
+				}
+
+				_self.Http.post(url, data).then((res) => {
 					if (res.data.status) {
 						_self.Utils.toast("设置成功");
 						uni.reLaunch({

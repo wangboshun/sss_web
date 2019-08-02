@@ -15,7 +15,7 @@
 			<view class="cu-item" :class="menuArrow?'arrow':''" @click="opendetail(item.id)">
 
 				<view class="action">
-					<view class="cu-tag round bg-orange light" style="width: 88px;">{{item.coin}}</view> 
+					<view class="cu-tag round bg-orange light" style="width: 88px;">{{item.coin}}</view>
 					<view class="cu-tag round bg-blue light" style="width: 40px;">{{item.ktime}}</view>
 				</view>
 
@@ -64,12 +64,12 @@
 		methods: {
 			AddConfig() {
 				uni.navigateTo({
-					url: 'config'
+					url: 'config?status=0'
 				});
 			},
 			opendetail(e) {
 				uni.navigateTo({
-					url: 'config?id=' + e
+					url: 'config?status=1&id=' + e
 				})
 			},
 			start(e) {
