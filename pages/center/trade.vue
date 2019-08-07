@@ -10,7 +10,7 @@
 
 				<view class="response padding-xs">
 					<view class="padding-5 radius shadow justify-between">
-						<view class="flex solid-bottom padding-sm justify-between">
+						<view class="flex solid-bottom padding-sm justify-between"> 
 							<view>类型</view>
 							<view> {{item.coin}} : {{item.side}}</view>
 						</view>

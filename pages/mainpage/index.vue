@@ -14,8 +14,9 @@
 			</swiper>
 
 			<view class="footer">
-				<view class="text-center">
-					<image @click="previewImage" src="../../static/thank.jpg"></image>
+				<view style="margin-top: 50%;text-align: center;color: red;font-size: 2rem;">
+					<text >欢迎使用小程序！</text>
+					<!-- <image @click="previewImage" src="../../static/thank.jpg"></image> -->
 				</view>
 			</view>
 		</scroll-view>

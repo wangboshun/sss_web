@@ -7,7 +7,7 @@
 
 		<view class="cu-form-group margin-top">
 			<view class="title">订单号：</view>
-			<text class="text-cyan">{{orderdetail.orderno}}</text>
+			<text class="text-cyan">{{orderdetail.first_trade_no}}</text>
 		</view>
 
 		<view class="cu-form-group margin-top">
@@ -17,17 +17,17 @@
 
 		<view class="cu-form-group margin-top">
 			<view class="title">方向：</view>
-			<text class="text-cyan">{{orderdetail.side}}</text>
+			<text class="text-cyan">{{orderdetail=='buy'?'多':'空'}}</text>
 		</view>
 
 		<view class="cu-form-group margin-top">
 			<view class="title">K线指标：</view>
-			<text class="text-cyan">{{orderdetail.ktime}}</text>
+			<text class="text-cyan">{{orderdetail.ktime}}分钟</text>
 		</view>
 
 		<view class="cu-form-group margin-top">
 			<view class="title">成交价格：</view>
-			<text class="text-cyan">{{orderdetail.price}}</text>
+			<text class="text-cyan">{{orderdetail.first_price}}</text>
 		</view>
 
 		<view class="cu-form-group margin-top">
@@ -37,32 +37,28 @@
 
 		<view class="cu-form-group margin-top">
 			<view class="title">成交时间：</view>
-			<text class="text-cyan">{{orderdetail.createtime}}</text>
+			<text class="text-cyan">{{orderdetail.first_time}}</text>
 		</view>
 
-		<view class="cu-form-group margin-top">
+		<!-- 		<view class="cu-form-group margin-top">
 			<view class="title">状态：</view>
-			<text class="text-cyan">{{orderdetail.status}}</text>
-		</view>
+			<text class="text-cyan"></text>
+		</view> -->
 	</view>
 
 </template>
 
 <script>
+	var _self;
 	export default {
 		data() {
 			return {
-				orderdetail: {
-					orderno: '20190626123',
-					coin: 'BTC-USDT',
-					side: '多',
-					ktime: '15分钟',
-					price: 100.123,
-					size: 100,
-					createtime: '2019-06-26 12:12:12',
-					status: '已完成'
-				}
+				orderdetail: {}
 			}
+		},
+		onLoad(e) {
+			_self = this;
+			_self.orderdetail = JSON.parse(e.val);
 		}
 	}
 </script>

@@ -32,6 +32,7 @@ http.delete('user/1').then((res)=>{
 
 import Utils from 'utils.js'
 
+// const Api_Url = 'https://sss.lifecwh.com/api/v1/';
 const Api_Url = 'http://localhost:12345/api/v1/';
 
 export default {

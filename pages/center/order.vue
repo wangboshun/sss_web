@@ -7,21 +7,21 @@
 
 		<view class="cu-list menu" :class="[menuBorder?'sm-border':'',menuCard?'card-menu margin-top':'']" v-for="(item,index) in orderList"
 		 :key="index">
-			<view class="cu-item" :class="menuArrow?'arrow':''" @click="opendetail(item.orderno)">
+			<view class="cu-item" :class="menuArrow?'arrow':''" @click="opendetail(item)">
 
 				<view class="cu-capsule radius">
 					<view class='cu-tag bg-cyan '>
 						订单号
 					</view>
 					<view class="cu-tag line-cyan">
-						{{item.orderno}}
+						{{item.first_trade_no}}
 					</view>
 				</view>
 
 				<view class="action">
-					<view class="cu-tag round bg-orange light" style="width: 30px;">{{item.coin}}</view>
-					<view class="cu-tag round  light" :class="item.side==='多'?'bg-green':'bg-red'" style="width: 20px;">{{item.side}}</view>
-					<view class="cu-tag round bg-blue light" style="width: 40px;">{{item.ktime}}</view>
+					<view class="cu-tag round bg-orange light" style="width: 80px;">{{item.coin}}</view>
+					<view class="cu-tag round  light" :class="item.side==='多'?'bg-green':'bg-red'" style="width: 30px;">{{item.side=='buy'?'多':'空'}}</view>
+					<view class="cu-tag round bg-blue light" style="width: 50px;">{{item.ktime}}分钟</view>
 				</view>
 
 			</view>
@@ -30,63 +30,34 @@
 </template>
 
 <script>
+	var _self;
+
 	export default {
 		data() {
 			return {
-				orderList: [{
-						orderno: '20190626123',
-						coin: 'btc',
-						side: '多',
-						ktime: '1分钟',
-						createtime: '2019-06-26 12:12:12'
-					}, {
-						orderno: '20190626123',
-						coin: 'btc',
-						side: '多',
-						ktime: '15分钟',
-						createtime: '2019-06-26 12:12:12'
-					}, {
-						orderno: '20190626123',
-						coin: 'btc',
-						side: '空',
-						ktime: '1小时',
-						createtime: '2019-06-26 12:12:12'
-					}, {
-						orderno: '20190626123',
-						coin: 'btc',
-						side: '多',
-						ktime: '15分钟',
-						createtime: '2019-06-26 12:12:12'
-					}, {
-						orderno: '20190626123',
-						coin: 'btc',
-						side: '空',
-						ktime: '30分钟',
-						createtime: '2019-06-26 12:12:12'
-					}, {
-						orderno: '20190626123',
-						coin: 'btc',
-						side: '多',
-						ktime: '4小时',
-						createtime: '2019-06-26 12:12:12'
-					},
-					{
-						orderno: '20190626123',
-						coin: 'btc',
-						side: '空',
-						ktime: '1天',
-						createtime: '2019-06-26 12:12:12'
-					}
-				],
+				orderList: [],
 				menuCard: false,
 				menuBorder: false,
 				menuArrow: false
 			}
 		},
+		onLoad() {
+			_self = this;
+			_self.Http.get("Trade/getlist").then((res) => {
+				if (res.data.status) {
+					_self.orderList = res.data.data.data;
+				} else {
+					_self.Utils.toast(res.data.message, true);
+				}
+			}).catch((err) => {
+				_self.Utils.toast("接口异常", true);
+			})
+		},
 		methods: {
 			opendetail(e) {
+				e.first_time = e.first_time.replace("T", " ");
 				uni.navigateTo({
-					url: 'orderdetail?orderno=' + e
+					url: 'orderdetail?val=' + JSON.stringify(e)
 				})
 			}
 		}

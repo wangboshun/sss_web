@@ -61,20 +61,20 @@
 			<view class="cu-list menu" :class="[menuBorder?'sm-border':'',menuCard?'card-menu margin-top':'']">
 
 				<view class="cu-item" :class="menuArrow?'arrow':''">
-					<navigator class="content" hover-class="none" url="../center/order" open-type="redirect">
+					<navigator class="content" hover-class="none" @click="openurl('/pages/center/order')" open-type="redirect">
 						<text class="cuIcon-discoverfill text-orange"></text>
-						<text class="text-grey">订单列表</text>
+						<text class="text-grey">账单列表</text>
 					</navigator>
 				</view>
 
 				<view class="cu-item" :class="menuArrow?'arrow':''">
-					<navigator class="content" hover-class="none" url="../center/trade" open-type="redirect">
+					<navigator class="content" hover-class="none" @click="openurl('/pages/center/trade')" open-type="redirect">
 						<text class="cuIcon-album text-orange"></text>
 						<text class="text-grey">账单收益</text>
 					</navigator>
 				</view>
 
-				<view class="cu-item" :class="menuArrow?'arrow':''">
+				<!-- 		<view class="cu-item" :class="menuArrow?'arrow':''">
 					<view class="content">
 						<text class="cuIcon-emojiflashfill text-pink"></text>
 						<text class="text-grey">使用人数</text>
@@ -86,10 +86,10 @@
 							<view class="cu-avatar round sm" style="background-image:url(https://ossweb-img.qq.com/images/lol/web201310/skin/big25002.jpg);"></view>
 							<view class="cu-avatar round sm" style="background-image:url(https://ossweb-img.qq.com/images/lol/web201310/skin/big91012.jpg);"></view>
 						</view>
-						<text class="text-grey text-sm">4 人</text>
+						<text class="text-grey text-sm">1024 人</text>
 					</view>
-				</view>
-				<view class="cu-item" :class="menuArrow?'arrow':''">
+				</view> -->
+				<!-- <view class="cu-item" :class="menuArrow?'arrow':''">
 					<view class="content">
 						<text class="cuIcon-tagfill text-red  margin-right-xs"></text>
 						<text class="text-grey">量化中......</text>
@@ -99,7 +99,7 @@
 						<view class="cu-tag round bg-olive light">空</view>
 						<view class="cu-tag round bg-blue light">1分钟</view>
 					</view>
-				</view>
+				</view> -->
 				<view class="cu-item">
 					<view class="content padding-tb-sm">
 						<view>
@@ -115,6 +115,7 @@
 </template>
 
 <script>
+	var _self;
 	export default {
 		name: "center",
 		data() {
@@ -130,7 +131,7 @@
 					color: 'orange',
 					badge: 1,
 					name: '账单',
-					url: '/pages/center/trade'
+					url: '/pages/center/order'
 				}, {
 					cuIcon: 'moneybag',
 					color: 'yellow',
@@ -168,13 +169,18 @@
 			};
 		},
 		created: function() {
+			_self = this;
 			this.$parent.LoginModal();
 		},
 		methods: {
 			openurl(e) {
-				uni.navigateTo({
-					url: e
-				});
+				if (e === "/pages/center/order" || e === "/pages/center/configlist") {
+					uni.navigateTo({
+						url: e
+					});
+				} else {
+					_self.Utils.toast("功能暂未开放", true);
+				}
 			},
 			showModal(e) {
 				this.modalName = e.currentTarget.dataset.target

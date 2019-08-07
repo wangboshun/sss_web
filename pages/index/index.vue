@@ -71,27 +71,41 @@
 		},
 		methods: {
 			LoginModal: function() {
-				_self = this;
-				uni.getStorage({
-					key: 'Auth',
-					complete: res => { 
-						if (res.data !== undefined && res.data !== '') {
+				_self = this; 
+				let val = uni.getStorageSync('Auth'); 
+				if (val !== undefined && val !== '') {
+					_self.LoginModal_Status = false;
+					_self.Utils.Openid =val;
+					_self.Http.interceptor.request = config => {
+						config.header = {
+							Auth:val
+						};
+					};
+				} else {
+					_self.LoginModal_Status = true;
+					uni.removeStorageSync('Auth');
+				}
 
-							_self.LoginModal_Status = false;
-							_self.Utils.Openid = res.data;
-							_self.Http.interceptor.request = config => {
-								config.header = {
-									Auth: res.data
-								};
-							};
-						} else {
-							_self.LoginModal_Status = true;
-							uni.removeStorage({
-								key: 'Auth'
-							});
-						}
-					}
-				});
+				// 				uni.getStorage({
+				// 					key: 'Auth',
+				// 					complete: res => {
+				// 						if (res.data !== undefined && res.data !== '') {
+				// 
+				// 							_self.LoginModal_Status = false;
+				// 							_self.Utils.Openid = res.data;
+				// 							_self.Http.interceptor.request = config => {
+				// 								config.header = {
+				// 									Auth: res.data
+				// 								};
+				// 							};
+				// 						} else {
+				// 							_self.LoginModal_Status = true;
+				// 							uni.removeStorage({
+				// 								key: 'Auth'
+				// 							});
+				// 						}
+				// 					}
+				// 				});
 			},
 			NavChange: function(e) {
 				this.PageCur = e.currentTarget.dataset.cur;

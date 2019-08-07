@@ -16,17 +16,17 @@
 				<form>
 					<view class="cu-form-group  margin-top">
 						<view class="title">ApiKey：</view>
-						<input type="text" name="ApiKey" v-model="Account.ApiKey" />
+						<input type="text" name="apikey" v-model="UserApi.apikey" />
 					</view>
 
 					<view class="cu-form-group  margin-top">
 						<view class="title">Secret：</view>
-						<input type="text" name="Secret" v-model="Account.Secret" />
+						<input type="text" name="secret" v-model="UserApi.secret" />
 					</view>
 
 					<view class="cu-form-group  margin-top">
 						<view class="title">PassPhrase：</view>
-						<input type="text" name="PassPhrase" v-model="Account.PassPhrase" />
+						<input type="text" name="passphrase" v-model="UserApi.passphrase" />
 					</view>
 
 					<view class="padding flex flex-direction"><button class="cu-btn bg-red margin-tb-sm lg" @click="confirm">确定</button></view>
@@ -34,46 +34,48 @@
 
 				<view class="cu-tabbar-height"></view>
 			</view>
-
 			<view v-else>
-				<view class="cu-bar solid-bottom margin-top">
-					<view class="action">
-						<text class="cuIcon-title text-orange "></text>
-						账户资金变动
+				<view v-if="!UserApi.status" @click="change(1)">
+					<view style="width: 200px;height: 200px; 
+		background-color:#F43F3B;border-radius: 100px;
+		text-align: center;line-height: 200px;
+		color: white;margin-left: 25%;margin-top:35%;">
+						量化已暂停
+					</view>
+				</view>
+				<view v-else @click="change(0)">
+					<view style="width: 200px;height: 200px; 
+		background-color:#39B54A;border-radius: 100px;
+		text-align: center;line-height: 200px;
+		color: white;margin-left: 25%;margin-top:35%;">
+						量化进行中...
 					</view>
 				</view>
 
-				<canvas canvas-id="canvasColumn" id="canvasColumn" class="charts" @touchstart="touchColumn"></canvas>
-
-				<view class="cu-bar solid-bottom margin-top">
-					<view class="action">
-						<text class="cuIcon-title text-orange "></text>
-						量化情况
-					</view>
-
-				</view>
-				<view class="cu-list menu">
-					<view class="cu-item">
-						<view class="content">
-							<text class="cuIcon-tagfill text-red  margin-right-xs"></text>
-							<text class="text-grey">量化中......</text>
-						</view>
-						<view class="action">
-							<view class="cu-tag round bg-orange light">BTC</view>
-							<view class="cu-tag round bg-olive light">空</view>
-							<view class="cu-tag round bg-blue light">1分钟</view>
-						</view>
-					</view>
+				<view class="cu-load load-modal" v-if="loadModal">
+					<view class="cuIcon-emojifill text-orange"></view>
+					<view class="gray-text">加载中...</view>
 				</view>
 			</view>
 
-			<view class="cu-load load-modal" v-if="loadModal">
-				<view class="cuIcon-emojifill text-orange"></view>
-				<view class="gray-text">加载中...</view>
+
+			<view class="cu-modal" :class="[AddModal?'show':'none']">
+				<view class="cu-dialog  bg-white">
+					<view class="cu-bar justify-end">
+						<view class="content">温馨提示</view>
+						<view class="action" @tap="cancel"><text class="cuIcon-close text-red"></text></view>
+					</view>
+					<view class="padding-xl">需要添加策略才能使用核心功能！</view>
+					<view class="cu-bar">
+						<view class="action margin-0 flex-sub text-green solid-left"><button style="font-size:0.8rem;" type="warn" @tap="cancel">取消</button></view>
+						<view class="action margin-0 flex-sub  solid-left">
+							<button style="font-size:0.8rem;" type="primary">添加</button>
+						</view>
+					</view>
+				</view>
 			</view>
 
 		</scroll-view>
-
 	</view>
 </template>
 
@@ -86,121 +88,90 @@
 		name: 'manager',
 		data() {
 			return {
-				updatestatus: true,
-				apiid: '020478ee-8671-40fe-a38f-c121fd63c761',
-				Account: {
-					ApiKey: '1',
-					Secret: '2',
-					PassPhrase: '3',
+				AddModal: false,
+				UserApi: {
+					apikey: '1',
+					secret: '2',
+					passphrase: '3',
+					status: 0,
+					userid: '',
+					id: ''
 				},
-				cWidth: '',
-				cHeight: '',
-				pixelRatio: 1,
 				loadModal: true,
-				isbind: false,
-				ColumnData: {
-					categories: ['06-26', '06-27', '06-28', '06-29', '06-30', '07-01', '07-02'],
-					series: [{
-						name: '账户资金',
-						data: [1251, 1322, 1468, 1655, 1829, 2191, 2319]
-					}]
-				}
+				isbind: true,
 			}
 		},
 		created: function() {
-			this.$parent.LoginModal();
-			this.getuserkey();
+			_self = this;
+			_self.$parent.LoginModal(); 
+			_self.getuserkey();
 		},
 		methods: {
+			getconfig() {
+				_self.Http.get("UserConfig/getlist").then((res) => {
+					if (res.data.data.data.length < 1) {
+						_self.UserApi.status = 0;
+						_self.AddModal = true;
+					} else {
+						_self.AddModal = false;
+					}
+				}).catch((err) => {
+					_self.Utils.toast("接口异常", true);
+				})
+			},
+			cancel() {
+				_self.AddModal = false;
+			},
+			change(e) {
+				let url = 'UserApi/update';
+				let temp = _self.UserApi.status;
+				_self.UserApi.status = e;
+				_self.Http.post(url, _self.UserApi).then((res) => {
+					if (res.data.data.status == 1) {
+						_self.Utils.toast("开启成功");
+					} else if (res.data.data.status == 0) {
+						_self.Utils.toast("关闭成功");
+					}
+				}).catch((err) => {
+					_self.UserApi.status = temp;
+					_self.Utils.toast("接口异常", true);
+				})
+			},
 			getuserkey() {
 				_self = this;
 				if (_self.Utils.Openid === '') {
-					this.loadModal = false;
+					_self.loadModal = false;
 					return;
 				}
 
 				_self.Http.get("UserApi/getbyuserid").then((res) => {
 					if (res.data.status) {
-						this.isbind = true;
-						this.cWidth = uni.upx2px(750);
-						this.cHeight = uni.upx2px(500);
-						this.showcolumn();
-						this.loadModal = false;
+						_self.UserApi = res.data.data;
+						_self.isbind = true;  
+						_self.loadModal = false;
 					} else {
 						_self.Utils.toast(res.data.message, true);
-						this.loadModal = false;
+						_self.loadModal = false;
 					}
 				}).catch((err) => {
 					if (err.data === undefined) {
 						_self.Utils.toast("接口异常", true);
-						this.loadModal = false;
+						_self.loadModal = false;
 					} else if (err.data.data === "" && err.data.code == 200) {
 						_self.Utils.toast("请配置交易Api", true);
-						this.loadModal = false;
-						this.isbind = false;
+						_self.loadModal = false;
+						_self.isbind = false;
 					}
 				})
-			},
-			showcolumn() {
-				_self = this;
-				let chartData = _self.$data.ColumnData;
-				canvaColumn = new uCharts({
-					$this: _self,
-					canvasId: 'canvasColumn',
-					type: 'column',
-					legend: true,
-					fontSize: 11,
-					background: '#FFFFFF',
-					pixelRatio: _self.pixelRatio,
-					animation: true,
-					categories: chartData.categories,
-					series: chartData.series,
-					xAxis: {
-						disableGrid: true
-					},
-					yAxis: {
-						//disabled:true
-					},
-					dataLabel: true,
-					width: _self.cWidth * _self.pixelRatio,
-					height: _self.cHeight * _self.pixelRatio,
-					extra: {
-						column: {
-							type: 'group',
-							width: (_self.cWidth * _self.pixelRatio * 0.45) / chartData.categories.length
-						}
-					}
-				});
-			},
-			touchColumn(e) {
-				canvaColumn.showToolTip(e, {
-					format: function(item, category) {
-						if (typeof item.data === 'object') {
-							return category + ' ' + item.name + ':' + item.data.value;
-						} else {
-							return category + ' ' + item.name + ':' + item.data;
-						}
-					}
-				});
 			},
 			confirm() {
 				_self = this;
 				let url = 'UserApi/add';
-				let data = {
-					ApiKey: this.$data.Account.ApiKey,
-					Secret: this.$data.Account.Secret,
-					PassPhrase: this.$data.Account.PassPhrase
-				};
-				if (_self.updatestatus) {
-					url = 'UserApi/update';
-					data.id = _self.apiid;
-				}
-
-				_self.Http.post(url, data).then((res) => {
+				_self.Http.post(url, _self.UserApi).then((res) => {
 					if (res.data.status) {
-						_self.Utils.toast("设置成功");
-						uni.reLaunch({
-							url: 'index?route=manager'
+						_self.Utils.toast("设置成功,添加策略");
+						uni.navigateTo({
+							url: '/center/config'
 						})
 					}
 				}).catch((err) => {
@@ -215,17 +186,5 @@
 	.page {
 		height: 100Vh;
 		width: 100vw;
-	}
-
-	.qiun-charts {
-		width: 750upx;
-		height: 500upx;
-		background-color: #ffffff;
-	}
-
-	.charts {
-		width: 750upx;
-		height: 500upx;
-		background-color: #ffffff;
-	}
+	} 
 </style>
