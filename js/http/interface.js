@@ -30,10 +30,10 @@ http.delete('user/1').then((res)=>{
 
 */
 
-import Utils from 'utils.js'
+import Utils from 'js/utils.js'
 
-// const Api_Url = 'https://sss.lifecwh.com/api/v1/';
-const Api_Url = 'http://localhost:12345/api/v1/';
+// const Api_Url = 'http://localhost:12345/api/v1/';
+const Api_Url = 'https://sss.lifecwh.com/api/v1/';
 
 export default {
 	Api_Url,
@@ -102,12 +102,12 @@ export default {
 				_reslog(response)
 				if (response.data === undefined) {
 					reject(response)
-				} else { 
+				} else {
 					if (response.data.code == 401) {
 						uni.reLaunch({
 							url: '/pages/index/index?route=mainpage',
 							complete: function() {
-								Utils.toast("权限不足，请重新登录！", true); 
+								Utils.toast("权限不足，请重新登录！", true);
 							}
 						});
 					}

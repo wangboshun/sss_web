@@ -22,9 +22,9 @@
 					<view class="picker">
 						{{ktimeindex>-1?ktimelist[ktimeindex]:'选择时间'}}
 					</view>
-				</picker>
-			</view>
-
+				</picker> 
+			</view> 
+  
 			<view class="cu-form-group  margin-top">
 				<view class="title">数量</view>
 				<input name="input" type="digit" v-model="size" style="padding-left: 60%;">个</input>

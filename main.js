@@ -1,10 +1,10 @@
 import Vue from 'vue'
 import App from './App'
  
-import Utils from 'utils.js'
+import Utils from 'js/utils.js'
 Vue.prototype.Utils = Utils
 
-import Http from 'vmeitime-http/interface.js'
+import Http from 'js/http/interface.js'
 Vue.prototype.Http = Http
 
 import mainpage from './pages/mainpage/index.vue'

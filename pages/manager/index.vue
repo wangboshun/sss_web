@@ -1,9 +1,7 @@
 <template name="manager">
 	<view>
 		<scroll-view class="page">
-			<cu_custom bgColor="bg-gradual-pink" :isBack="false">
-				<block slot="content">账号管理</block>
-			</cu_custom>
+			<cu_custom bgColor="bg-gradual-pink" :isBack="false"><block slot="content">账号管理</block></cu_custom>
 
 			<view v-if="!isbind">
 				<view class="cu-bar solid-bottom margin-top">
@@ -36,18 +34,22 @@
 			</view>
 			<view v-else>
 				<view v-if="!UserApi.status" @click="change(1)">
-					<view style="width: 200px;height: 200px; 
+					<view
+						style="width: 200px;height: 200px; 
 		background-color:#F43F3B;border-radius: 100px;
 		text-align: center;line-height: 200px;
-		color: white;margin-left: 25%;margin-top:35%;">
+		color: white;margin-left: 20%;margin-top:35%;"
+					>
 						量化已暂停
 					</view>
 				</view>
 				<view v-else @click="change(0)">
-					<view style="width: 200px;height: 200px; 
+					<view
+						style="width: 200px;height: 200px; 
 		background-color:#39B54A;border-radius: 100px;
 		text-align: center;line-height: 200px;
-		color: white;margin-left: 25%;margin-top:35%;">
+		color: white;margin-left: 20%;margin-top:35%;"
+					>
 						量化进行中...
 					</view>
 				</view>
@@ -57,134 +59,119 @@
 					<view class="gray-text">加载中...</view>
 				</view>
 			</view>
-
-
-			<view class="cu-modal" :class="[AddModal?'show':'none']">
-				<view class="cu-dialog  bg-white">
-					<view class="cu-bar justify-end">
-						<view class="content">温馨提示</view>
-						<view class="action" @tap="cancel"><text class="cuIcon-close text-red"></text></view>
-					</view>
-					<view class="padding-xl">需要添加策略才能使用核心功能！</view>
-					<view class="cu-bar">
-						<view class="action margin-0 flex-sub text-green solid-left"><button style="font-size:0.8rem;" type="warn" @tap="cancel">取消</button></view>
-						<view class="action margin-0 flex-sub  solid-left">
-							<button style="font-size:0.8rem;" type="primary">添加</button>
-						</view>
-					</view>
-				</view>
-			</view>
-
 		</scroll-view>
 	</view>
 </template>
 
 <script>
-	import uCharts from '../../chart/components/u-charts.js';
-	var _self;
-	var canvaColumn = null;
+var _self;
+var canvaColumn = null;
 
-	export default {
-		name: 'manager',
-		data() {
-			return {
-				AddModal: false,
-				UserApi: {
-					apikey: '1',
-					secret: '2',
-					passphrase: '3',
-					status: 0,
-					userid: '',
-					id: ''
-				},
-				loadModal: true,
-				isbind: true,
-			}
-		},
-		created: function() {
-			_self = this;
-			_self.$parent.LoginModal(); 
-			_self.getuserkey();
-		},
-		methods: {
-			getconfig() {
-				_self.Http.get("UserConfig/getlist").then((res) => {
+export default {
+	name: 'manager',
+	data() {
+		return {
+			UserApi: {
+				apikey: '1',
+				secret: '2',
+				passphrase: '3',
+				status: 0,
+				userid: '',
+				id: ''
+			},
+			loadModal: true,
+			isbind: true
+		};
+	},
+	created: function() {
+		_self = this;
+		_self.$parent.LoginModal();
+		_self.getuserkey();
+	},
+	methods: {
+		getconfig() {},
+		change(e) {
+			_self.Http.get('UserConfig/getlist')
+				.then(res => {
 					if (res.data.data.data.length < 1) {
-						_self.UserApi.status = 0;
-						_self.AddModal = true;
+						_self.Utils.toast('您是新用户，需要添加一个运行策略', true);
+						setTimeout(() => {
+							uni.navigateTo({
+								url: '/pages/center/config?status=0'
+							});
+						}, 1500);
 					} else {
-						_self.AddModal = false;
+						let url = 'UserApi/update';
+						let temp = _self.UserApi.status;
+						_self.UserApi.status = e;
+						_self.Http.post(url, _self.UserApi)
+							.then(res => {
+								if (res.data.data.status == 1) {
+									_self.Utils.toast('开启成功');
+								} else if (res.data.data.status == 0) {
+									_self.Utils.toast('关闭成功');
+								}
+							})
+							.catch(err => {
+								_self.UserApi.status = temp;
+								_self.Utils.toast('接口异常', true);
+							});
 					}
-				}).catch((err) => {
-					_self.Utils.toast("接口异常", true);
 				})
-			},
-			cancel() {
-				_self.AddModal = false;
-			},
-			change(e) {
-				let url = 'UserApi/update';
-				let temp = _self.UserApi.status;
-				_self.UserApi.status = e;
-				_self.Http.post(url, _self.UserApi).then((res) => {
-					if (res.data.data.status == 1) {
-						_self.Utils.toast("开启成功");
-					} else if (res.data.data.status == 0) {
-						_self.Utils.toast("关闭成功");
-					}
-				}).catch((err) => {
-					_self.UserApi.status = temp;
-					_self.Utils.toast("接口异常", true);
-				})
-			},
-			getuserkey() {
-				_self = this;
-				if (_self.Utils.Openid === '') {
-					_self.loadModal = false;
-					return;
-				}
+				.catch(err => {
+					_self.Utils.toast('接口异常', true);
+				});
+		},
+		getuserkey() {
+			if (_self.Utils.Openid === '') {
+				_self.loadModal = false;
+				return;
+			}
 
-				_self.Http.get("UserApi/getbyuserid").then((res) => {
+			_self.Http.get('UserApi/getbyuserid')
+				.then(res => {
 					if (res.data.status) {
 						_self.UserApi = res.data.data;
-						_self.isbind = true;  
+						_self.isbind = true;
 						_self.loadModal = false;
 					} else {
 						_self.Utils.toast(res.data.message, true);
 						_self.loadModal = false;
 					}
-				}).catch((err) => {
+				})
+				.catch(err => {
 					if (err.data === undefined) {
-						_self.Utils.toast("接口异常", true);
+						_self.Utils.toast('接口异常', true);
 						_self.loadModal = false;
-					} else if (err.data.data === "" && err.data.code == 200) {
-						_self.Utils.toast("请配置交易Api", true);
+					} else if (err.data.data === '' && err.data.code == 200) {
+						_self.Utils.toast('请配置交易Api', true);
 						_self.loadModal = false;
 						_self.isbind = false;
 					}
-				})
-			},
-			confirm() {
-				_self = this;
-				let url = 'UserApi/add';
-				_self.Http.post(url, _self.UserApi).then((res) => {
+				});
+		},
+		confirm() {
+			let url = 'UserApi/add';
+			_self.Http.post(url, _self.UserApi)
+				.then(res => {
 					if (res.data.status) {
-						_self.Utils.toast("设置成功,添加策略");
+						_self.Utils.toast('设置成功,添加策略');
 						uni.navigateTo({
 							url: '/center/config'
-						})
+						});
 					}
-				}).catch((err) => {
-					_self.Utils.toast("接口异常", true);
 				})
-			}
+				.catch(err => {
+					_self.Utils.toast('接口异常', true);
+				});
 		}
-	};
+	}
+};
 </script>
 
 <style>
-	.page {
-		height: 100Vh;
-		width: 100vw;
-	} 
+.page {
+	height: 100vh;
+	width: 100vw;
+}
 </style>
