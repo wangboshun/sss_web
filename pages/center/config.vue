@@ -22,15 +22,15 @@
 					<view class="picker">
 						{{ktimeindex>-1?ktimelist[ktimeindex]:'选择时间'}}
 					</view>
-				</picker> 
-			</view> 
-  
-			<view class="cu-form-group  margin-top">
-				<view class="title">数量</view>
-				<input name="input" type="digit" v-model="size" style="padding-left: 60%;">个</input>
+				</picker>
 			</view>
 
 			<view class="cu-form-group  margin-top">
+				<view class="title">数量</view>
+				<input name="input" type="digit" v-model="size" style="text-align: right;text-align: end;">个</input>
+			</view>
+
+			<!-- 		<view class="cu-form-group  margin-top">
 				<view class="title">止盈</view>
 				<input name="input" type="digit" v-model="profit" style="padding-left: 60%;">百分比</input>
 			</view>
@@ -38,10 +38,11 @@
 			<view class="cu-form-group  margin-top">
 				<view class="title">止损</view>
 				<input name="input" type="digit" v-model="loss" style="padding-left: 60%;">百分比</input>
-			</view>
+			</view> -->
 
 			<view class="padding flex flex-direction">
-				<button class="cu-btn bg-red margin-tb-sm lg" @click="confirm">确定</button>
+				<button class="cu-btn bg-green margin-tb-sm lg" @click="confirm">确定</button>
+				<button v-if="updatestatus" class="cu-btn bg-red margin-tb-sm lg" @click="remove">删除</button>
 			</view>
 		</form>
 	</view>
@@ -54,12 +55,13 @@
 		data() {
 			return {
 				updatestatus: false,
+				deletestatus: false,
 				coinindex: -1,
 				ktimeindex: -1,
 				size: 0,
 				profit: 0,
 				loss: 0,
-				coinlist: ['BTC-USDT', 'ETH-USDT', 'LTC-USDT'],
+				coinlist: ['BTC-USDT', 'ETH-USDT', 'LTC-USDT', 'TRX-USDT'],
 				ktimelist: ['1分钟', '15分钟', '60分钟'],
 				configid: ''
 			}
@@ -80,7 +82,6 @@
 					_self.profit = res.data.data.profit;
 					_self.loss = res.data.data.loss;
 				}).catch((err) => {
-					console.log("error", err);
 					_self.Utils.toast("接口异常", true);
 				})
 			} else {
@@ -93,6 +94,18 @@
 			},
 			ktimechange(e) {
 				this.ktimeindex = e.detail.value
+			},
+			remove() {
+				uni.showModal({
+					title: '温馨提示',
+					content: '确定要删除这个量化配置吗?',
+					success: function(res) {
+						if (res.confirm) {
+							_self.deletestatus = true;
+							_self.confirm();
+						}
+					}
+				});
 			},
 			confirm() {
 				if (_self.coinindex == -1) {
@@ -119,15 +132,18 @@
 				};
 
 				if (_self.updatestatus) {
+					if (_self.deletestatus) {
+						data.isdelete = 1;
+					}
 					url = 'UserConfig/update';
 					data.id = _self.configid;
 				}
 
 				_self.Http.post(url, data).then((res) => {
-					this.Utils.toast("设置成功");
+					this.Utils.toast("操作成功");
 					setTimeout(() => {
-						uni.navigateBack({
-							delta: 2
+						uni.redirectTo({
+							url: '/pages/index/index?route=manager'
 						});
 					}, 1000);
 				}).catch((err) => {

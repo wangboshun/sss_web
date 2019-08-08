@@ -18,6 +18,9 @@ Vue.component('manager', manager)
 
 import cuCustom from './pages/components/cu_custom.vue'
 Vue.component('cu_custom', cuCustom)
+
+import config_list from './pages/components/config_list.vue'
+Vue.component('config_list', config_list)
  
 import login_modal from './pages/components/login_modal.vue'
 Vue.component('login_modal', login_modal)
