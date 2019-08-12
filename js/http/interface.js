@@ -32,8 +32,11 @@ http.delete('user/1').then((res)=>{
 
 import Utils from 'js/utils.js'
 
-//const Api_Url = 'http://localhost:12345/api/v1/';
-const Api_Url = 'https://sss.lifecwh.com/api/v1/'; 
+ //const Api_Url = 'http://localhost:12345/api/v1/';
+
+//const Api_Url = 'https://wbs.free.idcfengye.com/' 
+
+const Api_Url = 'https://sss.lifecwh.com/api/v1/';
 
 export default {
 	Api_Url,
@@ -103,7 +106,7 @@ export default {
 				if (response.data === undefined) {
 					reject(response)
 				} else {
-					if (response.data.code == 401) {
+					if (response.data.code == 401) { //权限不足
 						uni.reLaunch({
 							url: '/pages/index/index?route=mainpage'
 						}).then(() => {
@@ -111,8 +114,10 @@ export default {
 								Utils.toast("权限不足，请重新登录！", true);
 							}, 500);
 						});
-					}
-					if (statusCode === 200) { //成功
+					} else if (statusCode === 400) { //错误
+						Utils.toast("服务异常！", true);
+						return;
+					} else if (statusCode === 200) { //成功
 						if (response.data.data.count !== undefined && response.data.data.count == 0) {
 							Utils.toast("暂无数据！", true);
 							resolve(response);

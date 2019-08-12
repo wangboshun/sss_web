@@ -53,8 +53,7 @@
 					apikey: '1',
 					secret: '2',
 					passphrase: '3'
-				},
-				loadModal: true,
+				}, 
 				isbind: false
 			};
 		},
@@ -65,28 +64,24 @@
 		},
 		methods: {
 			getuserkey() {
-				if (_self.Utils.Openid === '') {
-					_self.loadModal = false;
-					return;
+				if (_self.Utils.Openid === '') {  
+					uni.clearStorageSync();
+					return; 
 				}
 
 				_self.Http.get('UserApi/getbyuserid')
 					.then(res => {
 						if (res.data.status) {
-							_self.isbind = true;
-							_self.loadModal = false;
+							_self.isbind = true; 
 						} else {
-							_self.Utils.toast(res.data.message, true);
-							_self.loadModal = false;
+							_self.Utils.toast(res.data.message, true); 
 						}
 					})
-					.catch(err => {
+					.catch(err => { 
 						if (err.data === undefined) {
-							_self.Utils.toast('接口异常', true);
-							_self.loadModal = false;
+							_self.Utils.toast('接口异常', true); 
 						} else if (err.data.data === '' && err.data.code == 200) {
-							_self.Utils.toast('请配置交易Api', true);
-							_self.loadModal = false;
+							_self.Utils.toast('请配置交易Api', true); 
 							_self.isbind = false;
 						}
 					});
