@@ -16,17 +16,17 @@
 				<form>
 					<view class="cu-form-group  margin-top">
 						<view class="title">ApiKey：</view>
-						<input type="text" name="apikey" v-model="UserApi.apikey" />
+						<input type="text" placeholder="请填写ApiKey" name="apikey" v-model="UserApi.apikey" />
 					</view>
 
 					<view class="cu-form-group  margin-top">
 						<view class="title">Secret：</view>
-						<input type="text" name="secret" v-model="UserApi.secret" />
+						<input type="text" placeholder="请填写Secret" name="secret" v-model="UserApi.secret" />
 					</view>
 
 					<view class="cu-form-group  margin-top">
 						<view class="title">PassPhrase：</view>
-						<input type="text" name="passphrase" v-model="UserApi.passphrase" />
+						<input type="text" placeholder="请填写PassPhrase" name="passphrase" v-model="UserApi.passphrase" />
 					</view>
 
 					<view class="padding flex flex-direction"><button class="cu-btn bg-red margin-tb-sm lg" @click="confirm">确定</button></view>
@@ -50,9 +50,9 @@
 		data() {
 			return {
 				UserApi: {
-					apikey: '1',
-					secret: '2',
-					passphrase: '3'
+					apikey: '',
+					secret: '',
+					passphrase: ''
 				}, 
 				isbind: false
 			};
@@ -78,6 +78,10 @@
 						}
 					})
 					.catch(err => { 
+						if(err.data.code===401){
+							_self.$parent.LoginModal_Status=true;
+							return;
+						}
 						if (err.data === undefined) {
 							_self.Utils.toast('接口异常', true); 
 						} else if (err.data.data === '' && err.data.code == 200) {

@@ -17,7 +17,10 @@
 				</view>
 			</view>
 
-			<button type="primary" @click="help()">使用帮助</button>
+			<view style="position:absolute;bottom:10%;width:100%;padding: 1rem;">
+				<text class="cuIcon-questionfill" style="float: left;color:red;" @click="help">使用帮助</text>
+				<text class="cuIcon-appreciatefill" style="float: right;color:green" @click="previewImage">友情赞助</text>
+			</view>
 
 			<view class="cu-load load-modal" v-if="loadModal">
 				<view class="cuIcon-emojifill text-orange"></view>
@@ -77,22 +80,23 @@ export default {
 	},
 	methods: {
 		help() {
-			_self.loadModal = true; 
+			_self.loadModal = true;
+			let url = _self.Http.Api_Url + '/file/量化使用教程.pdf';
 			uni.downloadFile({
-				url: 'https://sss.lifecwh.com/file/量化使用教程.pdf',
+				url: url,
 				success(res) {
-					let path=res.tempFilePath;
-					console.log('---path',path);
+					let path = res.tempFilePath;
+					console.log('---path', path);
 					uni.openDocument({
-						filePath:path,
+						filePath: path,
 						success(res) {
 							_self.loadModal = false;
 							uni.saveFile({
-								tempFilePath:path,
+								tempFilePath: path,
 								success(info) {
-									console.log("---info",info);
+									console.log('---info', info);
 								}
-							})
+							});
 							console.log('打开成功', res);
 						},
 						fail(res) {
@@ -106,7 +110,7 @@ export default {
 		},
 		previewImage() {
 			uni.previewImage({
-				urls: ['https://small.huanchongkeji.com/thanks.jpg']
+				urls: [_self.Http.Api_Url + '/file/image/thank1.jpg']
 			});
 		},
 		methods1() {

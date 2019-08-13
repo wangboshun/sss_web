@@ -19,10 +19,10 @@
 				</view>
 
 				<view class="action">
-					<view class="cu-tag round bg-orange light" style="width: 80px;">{{item.coin}}</view>
+					<view class="cu-tag round bg-orange light" style="width: 60px;">{{item.coin}}</view>
 					<view v-if="item.side==='buy'" class="cu-tag round" style="width: 30px;color:green;background-color: #d7f0dbff;">多</view>
 					<view v-else class="cu-tag round  light bg-red" style="width: 30px;color:red">空</view>
-					<view class="cu-tag round bg-blue light" style="width: 50px;">{{item.ktime}}分钟</view>
+					<view class="cu-tag round bg-blue light" style="width: 40px;">{{item.ktime}}分钟</view>
 				</view>
 
 			</view>
