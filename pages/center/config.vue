@@ -29,17 +29,7 @@
 				<view class="title">数量</view>
 				<input name="input" type="digit" v-model="size" style="text-align: right;text-align: end;">个</input>
 			</view>
-
-			<!-- 		<view class="cu-form-group  margin-top">
-				<view class="title">止盈</view>
-				<input name="input" type="digit" v-model="profit" style="padding-left: 60%;">百分比</input>
-			</view>
-
-			<view class="cu-form-group  margin-top">
-				<view class="title">止损</view>
-				<input name="input" type="digit" v-model="loss" style="padding-left: 60%;">百分比</input>
-			</view> -->
-
+			
 			<view class="padding flex flex-direction">
 				<button class="cu-btn bg-green margin-tb-sm lg" @click="confirm">确定</button>
 				<button v-if="updatestatus" class="cu-btn bg-red margin-tb-sm lg" @click="remove">删除</button>

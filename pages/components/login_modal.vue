@@ -1,22 +1,24 @@
 <template>
-	<view class="cu-modal" :class="[IsShow ? 'show' : 'none']">
-		<view class="cu-dialog  bg-white">
-			<view class="cu-bar justify-end">
-				<view class="content">授权登录</view>
-				<view class="action" @tap="LoginCancel"><text class="cuIcon-close text-red"></text></view>
-			</view>
-			<view class="padding-xl">需要登录才能使用核心功能！</view>
-			<view class="cu-bar">
-				<view class="action margin-0 flex-sub text-green solid-left"><button style="font-size:0.8rem;" type="warn" @tap="LoginCancel">取消</button></view>
-				<view class="action margin-0 flex-sub  solid-left">
-					<button style="font-size:0.8rem;" type="primary" open-type="getUserInfo" @getuserinfo="LoginIn">登录</button>
+	<view>
+		<view class="cu-modal" :class="[IsShow ? 'show' : 'none']">
+			<view class="cu-dialog  bg-white">
+				<view class="cu-bar justify-end">
+					<view class="content">授权登录</view>
+					<view class="action" @tap="LoginCancel"><text class="cuIcon-close text-red"></text></view>
+				</view>
+				<view class="padding-xl">需要登录才能使用核心功能！</view>
+				<view class="cu-bar">
+					<view class="action margin-0 flex-sub text-green solid-left"><button style="font-size:0.8rem;" type="warn" @tap="LoginCancel">取消</button></view>
+					<view class="action margin-0 flex-sub  solid-left">
+						<button style="font-size:0.8rem;" type="primary" open-type="getUserInfo" @getuserinfo="LoginIn">登录</button>
+					</view>
 				</view>
 			</view>
+		</view>
 
-			<view class="cu-load load-modal" v-if="loadModal">
-				<view class="cuIcon-emojifill text-orange"></view>
-				<view class="gray-text">加载中...</view>
-			</view>
+		<view class="cu-load load-modal" v-if="loadModal">
+			<view class="cuIcon-emojifill text-orange"></view>
+			<view class="gray-text">加载中...</view>
 		</view>
 	</view>
 </template>
@@ -45,6 +47,7 @@ export default {
 		LoginIn: function(data) {
 			_self = this;
 			_self.loadModal = true;
+			this.$emit('update:IsShow', false);
 			uni.login({
 				provider: 'weixin',
 				success: function(res) {
@@ -64,12 +67,22 @@ export default {
 										Auth: _self.Utils.Openid
 									};
 								};
-								_self.Utils.toast('登陆成功');
+
+								uni.reLaunch({
+									url: '/pages/index/index?route=manager',
+									success() {
+										setTimeout(function() {
+											_self.Utils.toast('登陆成功');
+										}, 1000);
+									}
+								});
+							} else {
+								_self.Utils.toast('登录失败，请重试！', true);
 								_self.loadModal = false;
-								_self.$emit('update:IsShow', false);
 							}
 						})
 						.catch(err => {
+							_self.loadModal = false;
 							_self.Utils.toast('接口异常', true);
 						});
 				}

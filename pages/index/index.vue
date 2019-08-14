@@ -18,7 +18,7 @@
 			<view class="action" @click="NavChange" data-cur="center">
 				<view class="cuIcon-cu-image"><image :src="'/static/tabbar/center' + [PageCur == 'center' ? '_cur' : ''] + '.png'"></image></view>
 				<view :class="PageCur == 'center' ? 'text-green' : 'text-gray'">我</view>
-			</view> 
+			</view>
 		</view>
 	</view>
 </template>
@@ -77,9 +77,11 @@ export default {
 						Auth: val
 					};
 				};
+				return Promise.resolve();
 			} else {
 				_self.LoginModal_Status = true;
 				uni.removeStorageSync('Auth');
+				return Promise.resolve();
 			}
 		},
 		NavChange: function(e) {

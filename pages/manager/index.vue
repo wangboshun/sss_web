@@ -27,7 +27,7 @@
 							<input type="text" placeholder="请填写PassPhrase" name="passphrase" v-model="UserApi.passPhrase" />
 						</view>
 
-						<view class="padding flex flex-direction"><button class="cu-btn bg-red margin-tb-sm lg" @click="confirm">确定</button></view>
+						<view class="padding flex flex-direction"><button class="cu-btn bg-green margin-tb-sm lg" @click="confirm">确定</button></view>
 					</form>
 
 					<view class="cu-tabbar-height"></view>
@@ -67,13 +67,14 @@ export default {
 	},
 	created: function() {
 		_self = this;
-		_self.$parent.LoginModal();
-		_self.getuserkey();
+		_self.$parent.LoginModal().then(() => {
+			_self.getuserkey();
+		});
 	},
 	methods: {
 		getuserkey() {
 			if (_self.Utils.Openid === '') {
-				uni.clearStorageSync();
+				uni.clearStorageSync(); 
 				return;
 			}
 

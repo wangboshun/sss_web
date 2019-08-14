@@ -32,10 +32,10 @@ http.delete('user/1').then((res)=>{
 
 import Utils from 'js/utils.js'
 
-const Api_Url = 'http://localhost:12345';
+//const Api_Url = 'http://localhost:12345';
 
-//const Api_Url = 'https://sss.lifecwh.com';
-
+const Api_Url = 'https://sss.lifecwh.com';
+ 
 export default {
 	Api_Url,
 	config: {

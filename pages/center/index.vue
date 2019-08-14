@@ -198,6 +198,7 @@ export default {
 		},
 		SwitchSex(e) {
 			uni.clearStorageSync();
+			_self.Utils.Openid = '';
 			_self.Utils.toast('清除成功');  
 		}
 	}
