@@ -1,11 +1,5 @@
 <template>
-	<view>
-		<view class="cu-bar bg-white solid-bottom margin-top margin-bottom">
-			<view class="action">
-				<text class="cuIcon-title text-orange "></text>
-				我的配置
-			</view>
-		</view>
+	<view> 
 
 		<view class="cu-list menu" v-for="(item, index) in configList" :key="index">
 			<view class="cu-item" @click="openconfig(item.id)">

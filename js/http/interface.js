@@ -32,14 +32,14 @@ http.delete('user/1').then((res)=>{
 
 import Utils from 'js/utils.js'
 
-//const Api_Url = 'http://localhost:12345';
+const Api_Url = 'http://localhost:12345';
 
-const Api_Url = 'https://sss.lifecwh.com';
+//const Api_Url = 'https://sss.lifecwh.com';
 
 export default {
 	Api_Url,
 	config: {
-		baseUrl: Api_Url+'/api/v1/',
+		baseUrl: Api_Url + '/api/v1/',
 		header: {
 			'Content-Type': 'application/json;charset=UTF-8'
 		},
@@ -108,9 +108,14 @@ export default {
 						Utils.toast("权限不足，请重新登录！", true);
 						reject(response);
 
-					} else if (statusCode === 400) { //错误
-						Utils.toast("服务异常！", true);
-						return;
+					} else if (statusCode === 400) { //错误  
+						if (response.data != null) {
+							Utils.toast(response.data.message.toString(), true);
+							return;
+						} else {
+							Utils.toast("服务异常！", true);
+							return;
+						}
 					} else if (statusCode === 200) { //成功
 						if (response.data.data.count !== undefined && response.data.data.count == 0) {
 							Utils.toast("暂无数据！", true);
@@ -122,7 +127,7 @@ export default {
 						reject(response)
 					}
 				}
-			} 
+			}
 
 			_config = Object.assign({}, this.config, options)
 			_config.requestId = new Date().getTime()

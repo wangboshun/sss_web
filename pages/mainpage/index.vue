@@ -90,13 +90,7 @@ export default {
 					uni.openDocument({
 						filePath: path,
 						success(res) {
-							_self.loadModal = false;
-							uni.saveFile({
-								tempFilePath: path,
-								success(info) {
-									console.log('---info', info);
-								}
-							});
+							_self.loadModal = false; 
 							console.log('打开成功', res);
 						},
 						fail(res) {
